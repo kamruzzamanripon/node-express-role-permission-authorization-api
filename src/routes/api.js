@@ -7,6 +7,7 @@ const router = express.Router();
 //Usr router
 router.post('/create-user', UserController.createUser);
 router.post('/user-role-assign', UserController.userRoleAssign);
+router.get('/single-user-info/:id', UserController.singleUserInfo);
 
 //role router
 router.post('/create-role', RoleController.createRole);
