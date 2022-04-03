@@ -27,7 +27,7 @@ module.exports = class UserController {
       }
     };
 
-
+    //Role assign on user base on user id
     static userRoleAssign = async(req, res)=>{
         const payload = req.body
         //return console.log(payload.userId)
@@ -51,6 +51,7 @@ module.exports = class UserController {
     }
 
 
+    //user all information with role and role wise all permissons
     static singleUserInfo = async(req, res)=>{
         const id = req.params.id;
 
