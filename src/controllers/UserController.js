@@ -55,15 +55,22 @@ module.exports = class UserController {
         const id = req.params.id;
 
         try {
+            
             //1st find user by id
             const singleUserInfo = await User.findById(id);
-            const {name, email, phone} = singleUserInfo;
+            const {_id, name, email, phone} = singleUserInfo;
             //seperate roleId from singleUserInfo
-            const  roleId = singleUserInfo.roleId.toString()
+            //const  roleId = singleUserInfo.roleId.toString()
+            
+            //find user role id on user_has_role table
+            const UserroleId = await UserHasRole.where({userId:_id}).exec()
+            const {roleId} = UserroleId[0];
+            //return console.log(roleId)
 
-            //this roleId query on Role table and find the role Name
+            //this roleId, query on Role table and find the role Name
             const roleInfo = await Role.findById(roleId);
             const {_id:userRoleId, name:role} = roleInfo;
+            //return console.log(roleInfo)
 
             //and then this roleId query on RoleHasPermission table to fetch the permission list as role Id wise
             const roleWisePermissionId = await RoleHasPermission.where({roleId:roleId}).exec()

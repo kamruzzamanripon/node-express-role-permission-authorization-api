@@ -20,14 +20,8 @@ const DataSchema = new mongoose.Schema({
         type: Boolean,
         required: true,
         default: true
-    },
-    roleId: {
-        type: mongoose.Types.ObjectId,
-        ref: "Role",
-        required: false,
-        default: null
     }
-    
+      
 },{ timestamps: true, versionKey:false })
 
 
