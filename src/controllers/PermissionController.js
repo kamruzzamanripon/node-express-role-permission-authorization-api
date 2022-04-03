@@ -1,4 +1,5 @@
 const Permission = require('../models/Permission');
+const RoleHasPermission = require('../models/RoleHasPermission');
 
 module.exports = class PermissionController{
 
@@ -19,5 +20,35 @@ module.exports = class PermissionController{
               error: true,
             });
           }
+    }
+
+    static deletePermission = async(req, res)=>{
+        const id = req.params.id;
+        //return console.log(id)
+
+        try {
+          //1st fetch all data by req id param      
+          const roleHasPermissionList = await RoleHasPermission.where({"permissionId": {$in:id}})
+          for(var i=0; roleHasPermissionList.length > i; i++){
+            //fetch only permission array
+            var permissonArray = roleHasPermissionList[i].permissionId
+            //delete permission id which is send by req id param. and reform again new array
+            var permissionFilter = permissonArray.filter(item=> item !== id)
+            //this new array push on role_has_permission table.
+            await RoleHasPermission.findOneAndUpdate( { _id: roleHasPermissionList[i]._id }, {"permissionId": permissionFilter} );
+            //return console.log(permissionFilter)
+          }
+          return res.status(200).json({
+            code: 200,
+            message: "Permission Delete Successfully",
+            //data: roleHasPermissions,
+          });
+        } catch (error) {
+          res.status(501).json({
+            code: 501,
+            message: error.message,
+            error: true,
+          });
+        }
     }
 }
