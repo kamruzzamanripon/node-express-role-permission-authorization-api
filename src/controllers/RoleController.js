@@ -58,7 +58,6 @@ module.exports = class RoleController{
           if(findRoleIdOnTable){
              const roleAssignPermission = await RoleHasPermission.findOneAndUpdate({"roleId":roleId}, {"permissionId":permissionId}, {upsert: true})
 
-           // return console.log(roleAssignPermission)
             return res.status(200).json({
               code: 200,
               message: "roleAssignPermission update Successfully",
