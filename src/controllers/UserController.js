@@ -3,6 +3,9 @@ const Role = require("../models/Role");
 const RoleHasPermission = require("../models/RoleHasPermission");
 const User = require("../models/User");
 const UserHasRole = require("../models/UserHasRole");
+const { matchData } = require("../utils/bcrypt");
+const { createToken } = require("../utils/jwt");
+const userAllInformation = require("../utils/userAllInformation");
 
 
 module.exports = class UserController {
@@ -54,39 +57,11 @@ module.exports = class UserController {
     //user all information with role and role wise all permissons
     static singleUserInfo = async(req, res)=>{
         const id = req.params.id;
+        //return console.log(req.user)
 
         try {
-            
-            //1st find user by id
-            const singleUserInfo = await User.findById(id);
-            const {_id, name, email, phone} = singleUserInfo;
-            //seperate roleId from singleUserInfo
-            //const  roleId = singleUserInfo.roleId.toString()
-            
-            //find user role id on user_has_role table
-            const UserroleId = await UserHasRole.where({userId:_id}).exec()
-            const {roleId} = UserroleId[0];
-            //return console.log(roleId)
-
-            //this roleId, query on Role table and find the role Name
-            const roleInfo = await Role.findById(roleId);
-            const {_id:userRoleId, name:role} = roleInfo;
-            //return console.log(roleInfo)
-
-            //and then this roleId query on RoleHasPermission table to fetch the permission list as role Id wise
-            const roleWisePermissionId = await RoleHasPermission.where({roleId:roleId}).exec()
-            //seperate permission Array id from the RoleHasPermission Object
-            const permissionListArray = roleWisePermissionId[0].permissionId
-            //this Permission Array Id query on Permission table to fetch id wise primission name.
-            const permissionList = await Permission.find().where('_id').in(permissionListArray).exec();
-           
-            //const {name:permissions} = permissionList
-
-            //user All information add
-            const singleUserAllInfo = {name, email, phone, userRoleId, role, permissionList}
-            //return console.log(singleUserAllInfo)
-
-
+             const singleUserAllInfo = await userAllInformation(id);
+            // return console.log(singleUserAllInfo)
            return res.status(200).json({
               code: 200,
               message: "User Information",
@@ -101,4 +76,41 @@ module.exports = class UserController {
           }
 
     }
+
+
+    static userLogin = async(req, res)=>{
+      const { email, password } = req.body;
+
+      const user = await User.findOne({ email }).exec();
+      //return console.log(user);
+  
+      if (!user)
+        return res
+          .status(401)
+          .json({code: 401, message: "Email isn't registered."})
+      else if (!matchData(password, user.password))
+        return res.status(401).json({code: 401, message: "Password doesn't matched."})
+      else if (!user.active)
+        return res
+          .status(401)
+          .json({code: 401, message: "Your account is deactivated."})
+      else {
+        const { name, _id, email, phone } = user;
+        const userAllInfo = await userAllInformation(_id)
+        //return console.log(name);
+        const data = {
+          userAllInfo,
+          jwt_token: "Bearer " + createToken(userAllInfo),
+        };
+        //userAllInfo.jwt_token ="Bearer " + createToken({ _id, name, email, phone })
+        return res.status(200).json({
+          code: 200,
+          message: "User data Information",
+          data: data,
+        });
+      }
+    }
+
+
+
 }
