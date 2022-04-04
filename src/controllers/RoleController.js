@@ -25,6 +25,26 @@ module.exports = class RoleController{
           }
     }
 
+    //Role Edit/Update
+    static editRole = async(req, res)=>{
+      const id = req.params.id;
+      const payload = req.body;
+      try {
+        const editPermission = await Role.findByIdAndUpdate({"_id" : id}, payload);
+        return res.status(200).json({
+          code: 200,
+          message: "Role Update Successfully",
+          data: editPermission,
+        });
+      } catch (error) {
+        res.status(501).json({
+          code: 501,
+          message: error.message,
+          error: true,
+        });
+      }
+    }
+
     //include permission array into one role
     static roleAssignPermission = async(req, res)=>{
         const payload = req.body;
