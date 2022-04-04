@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const DataSchema = new mongoose.Schema({
     name: {
         type: String,
+        unique: true,
         required: [true, 'Please enter name'],
         trim: true,
         maxLength: [100, 'name cannot exceed 100 characters']

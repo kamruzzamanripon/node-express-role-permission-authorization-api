@@ -48,14 +48,32 @@ module.exports = class RoleController{
     //include permission array into one role
     static roleAssignPermission = async(req, res)=>{
         const payload = req.body;
-        //return 
+        const {roleId} = payload;
+        const {permissionId} = payload;
         try {
+            //find role id on role_has_permission table
+            const findRoleIdOnTable = await RoleHasPermission.find().where({"roleId":roleId})
+
+           // if role id found then update this collection/table
+          if(findRoleIdOnTable){
+             const roleAssignPermission = await RoleHasPermission.findOneAndUpdate({"roleId":roleId}, {"permissionId":permissionId}, {upsert: true})
+
+           // return console.log(roleAssignPermission)
+            return res.status(200).json({
+              code: 200,
+              message: "roleAssignPermission update Successfully",
+              data: roleAssignPermission,
+            });
+          }else{
+            //if role id not found then create new collection/table
             const roleAssignPermission = await new RoleHasPermission(payload).save();
             return res.status(200).json({
               code: 200,
-              message: "roleAssignPermission Successfully",
+              message: "roleAssignPermission save Successfully",
               data: roleAssignPermission,
             });
+          }
+            
           } catch (error) {
             res.status(501).json({
               code: 501,
@@ -67,7 +85,8 @@ module.exports = class RoleController{
 
     //role id base permission arry show
     static roleWisePermissionShow = async(req, res)=>{
-        const {roleId} = req.body;
+        //const {roleId} = req.body;
+        const roleId = req.params.id;
         //return console.log(roleId)
         try {
             const roleWisePermissionShow = await RoleHasPermission.find({ roleId: roleId }).exec();

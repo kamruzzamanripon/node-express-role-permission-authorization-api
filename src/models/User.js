@@ -10,7 +10,8 @@ const DataSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        reqired: true
+        reqired: true,
+        unique: true
     },
     phone: {
         type: String,

@@ -13,7 +13,7 @@ router.get('/single-user-info/:id', UserController.singleUserInfo);
 router.post('/create-role', RoleController.createRole);
 router.post('/edit-role/:id', RoleController.editRole);
 router.post('/role-assign-permissin', RoleController.roleAssignPermission);
-router.post('/role-wise-permissin-show', RoleController.roleWisePermissionShow);
+router.get('/role-wise-permissin-show/:id', RoleController.roleWisePermissionShow);
 router.delete('/role-delete/:id', RoleController.roleDelete);
 
 //permission router

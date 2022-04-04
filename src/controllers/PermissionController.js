@@ -52,6 +52,7 @@ module.exports = class PermissionController{
 
           //2nd fetch all data by req id param      
           const roleHasPermissionList = await RoleHasPermission.where({"permissionId": {$in:id}});
+          //update all role_has_permission data.
           for(var i=0; roleHasPermissionList.length > i; i++){
             //fetch only permission array
             var permissonArray = roleHasPermissionList[i].permissionId
