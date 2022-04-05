@@ -1,3 +1,4 @@
+const permissionMiddleware = require("../middlewares/permissionMiddleware");
 const Permission = require("../models/Permission");
 const Role = require("../models/Role");
 const RoleHasPermission = require("../models/RoleHasPermission");
@@ -57,8 +58,7 @@ module.exports = class UserController {
     //user all information with role and role wise all permissons
     static singleUserInfo = async(req, res)=>{
         const id = req.params.id;
-        //return console.log(req.user)
-
+        
         try {
              const singleUserAllInfo = await userAllInformation(id);
             // return console.log(singleUserAllInfo)
@@ -100,7 +100,7 @@ module.exports = class UserController {
         //return console.log(name);
         const data = {
           userAllInfo,
-          jwt_token: "Bearer " + createToken(userAllInfo),
+          jwt_token: "Bearer " + createToken({ _id, name, email, phone }),
         };
         //userAllInfo.jwt_token ="Bearer " + createToken({ _id, name, email, phone })
         return res.status(200).json({

@@ -86,12 +86,12 @@ module.exports = class RoleController{
     static roleWisePermissionShow = async(req, res)=>{
         //const {roleId} = req.body;
         const roleId = req.params.id;
-        //return console.log(roleId)
+        //return console.log(req.user)
         try {
             const roleWisePermissionShow = await RoleHasPermission.find({ roleId: roleId }).exec();
             return res.status(200).json({
               code: 200,
-              message: "roleAssignPermission Successfully",
+              message: "role wise Permission show",
               data: roleWisePermissionShow,
             });
           } catch (error) {
