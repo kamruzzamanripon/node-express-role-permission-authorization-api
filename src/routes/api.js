@@ -16,6 +16,8 @@ router.post('/user-login', UserController.userLogin);
 router.post('/create-role', RoleController.createRole);
 router.post('/edit-role/:id', RoleController.editRole);
 router.post('/role-assign-permissin', RoleController.roleAssignPermission);
+router.get('/role-list', RoleController.roleList);
+router.get('/role-list-with-permissions', RoleController.roleListWithPermissions);
 router.get('/role-wise-permissin-show/:id', RoleController.roleWisePermissionShow);
 router.delete('/role-delete/:id', RoleController.roleDelete);
 
@@ -26,3 +28,4 @@ router.delete('/delete-permission/:id', PermissionController.deletePermission);
 
 
 module.exports = router;
+
