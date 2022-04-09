@@ -6,7 +6,7 @@ import Pagination from "react-js-pagination";
 const RoleTable = () => {
     const columns = [
         {
-          title: 'Role',
+          title: 'No',
           dataIndex: 'name',
           key: 'name',
           width: 400,
@@ -14,14 +14,14 @@ const RoleTable = () => {
           rowClassName:"bg-black-ripon"
         },
         {
-          title: 'Total Subcategory',
+          title: 'Role',
           dataIndex: 'subCount',
           key: 'subCount',
           width: 400,
           className:"text-white bg-gray-600 p-2 border-r-2 border-b-2"
         },
         {
-          title: 'Total Product',
+          title: 'permissions',
           dataIndex: 'productCount',
           key: 'productCount',
           width: 400,
