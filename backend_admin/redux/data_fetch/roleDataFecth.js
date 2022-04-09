@@ -8,7 +8,7 @@ export const roleAllWithPermissions =  createAsyncThunk(
         
             try{
                 const res = await axios.get(`${process.env.apiBaseUrl}/role-list-with-permissions`);
-                console.log("api Hello", res)
+                //console.log("api Hello", res)
                 //console.log("permissionAllWithPagination server", res.data.Permission_info)
                 return res.data.data
             }catch(e){

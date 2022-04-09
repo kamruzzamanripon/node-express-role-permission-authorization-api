@@ -1,21 +1,14 @@
-import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { roleAllWithPermissions } from '../../redux/data_fetch/roleDataFecth';
-import PageComponentTitle from '../common/PageComponentTitle';
+import React from 'react';
+import RoleComponentTitle from './RoleComponentTitle';
 import RoleTable from './RoleTable';
 
 
 const Role = () => {
-  const dispatch = useDispatch();
-
-  useEffect(()=>{
-    dispatch(roleAllWithPermissions())
-  },[])
     return (
         <main className="p-6 sm:p-10 space-y-6">
         
         <div className="flex flex-col space-y-6 md:space-y-0 md:flex-row justify-between">
-            <PageComponentTitle 
+            <RoleComponentTitle 
                 title='Role'
                 titleDescription='List, view and edit'
                 buttonTitle='Create new Role'

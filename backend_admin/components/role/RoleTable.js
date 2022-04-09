@@ -1,31 +1,53 @@
 import Table from 'rc-table';
-import React, { useState } from 'react';
-import Pagination from "react-js-pagination";
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { roleAllWithPermissions } from '../../redux/data_fetch/roleDataFecth';
 
 
 const RoleTable = () => {
+  const dispatch = useDispatch();
+  const roleData = useSelector((state)=>state.store.role.items);
+  //console.log(roleData)
+  
+  useEffect(()=>{
+    dispatch(roleAllWithPermissions())
+  },[]);
+
+  const viewInfoHandler = (data)=>{
+   console.log(data)
+  }
+
+
+
     const columns = [
         {
           title: 'No',
           dataIndex: 'name',
           key: 'name',
-          width: 400,
+          width: 100,
           className:"text-white bg-gray-800 p-2 border-r-2 border-b-2",
-          rowClassName:"bg-black-ripon"
+          rowClassName:"bg-black-ripon",
+          render:(text,record,index)=>`${index+1}`
         },
         {
           title: 'Role',
-          dataIndex: 'subCount',
-          key: 'subCount',
+          dataIndex: 'roleInfo',
+          key: 'roleInfo',
           width: 400,
-          className:"text-white bg-gray-600 p-2 border-r-2 border-b-2"
+          className:"text-white bg-gray-600 p-2 border-r-2 border-b-2",
+          render: (data) =>{
+           return   <a href="#">{data.roleName}</a>
+          }
         },
         {
           title: 'permissions',
-          dataIndex: 'productCount',
-          key: 'productCount',
-          width: 400,
-          className:"text-white bg-gray-800 p-2 border-r-2 border-b-2"
+          dataIndex: 'permissionArray',
+          key: 'permissionArray',
+          width: 500,
+          className:"text-white bg-gray-800 p-2 border-r-2 border-b-2",
+          render: (data) =>{
+            return   <div>{data.map((permission, index)=> <><span key={index}>{permission.permissionName}</span> <br/></>)}</div>
+           }
         },
         {
           title: 'Operations',
@@ -35,36 +57,12 @@ const RoleTable = () => {
           render: () => <><a href="#">View</a> | <a href="#">Edit</a> | <a href="#">Delete</a></>,
           
         },
-      ];
-      
-      const data = [
-        { name: 'Jack', subCount: 28, productCount: 'some where' },
-        { name: 'Rose', subCount: 36, productCount: 'some where' },
-      ];
+      ]
 
-      //Pagination
-      const [activePage, setActivePage] = useState(15)
-      const handlePageChange = (pageNumber)=>{
-        setActivePage(pageNumber)
-      }
 
     return (
         <>
-        <Table columns={columns} data={data}  className='bg-purple-700 p-4 w-full text-center rc-table-custom font-semibold '/>
-        <Pagination
-          activePage={activePage}
-          itemsCountPerPage={10}
-          totalItemsCount={450}
-          pageRangeDisplayed={5}
-          onChange={handlePageChange}
-          nextPageText={'Next'}
-          prevPageText={'Prev'}
-          firstPageText={'First'}
-          lastPageText={'Last'}
-          innerClass="js-ul"
-          itemClass='js-li'
-          linkClass='page-link'
-        />
+        <Table columns={columns} data={roleData} rowKey="id"  className='bg-purple-700 p-4 w-full text-center rc-table-custom font-semibold '/>
         </>
         
     );
