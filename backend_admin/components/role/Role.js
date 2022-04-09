@@ -1,9 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { roleAllWithPermissions } from '../../redux/data_fetch/roleDataFecth';
 import PageComponentTitle from '../common/PageComponentTitle';
 import RoleTable from './RoleTable';
 
 
 const Role = () => {
+  const dispatch = useDispatch();
+
+  useEffect(()=>{
+    dispatch(roleAllWithPermissions())
+  },[])
     return (
         <main className="p-6 sm:p-10 space-y-6">
         

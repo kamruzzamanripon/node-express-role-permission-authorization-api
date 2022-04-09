@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { roleAllWithPermissions } from "../data_fetch/roleDataFecth";
 
 
 
@@ -18,7 +19,17 @@ const roleSlice = createSlice({
     }
   },
   extraReducers:{
-        
+       //Role List with related all permisssion
+      [roleAllWithPermissions.pending]: (state) => {
+        state.loading = true
+      },
+      [roleAllWithPermissions.fulfilled]: (state, { payload }) => {
+          state.loading = false
+          state.items = payload
+      },
+      [roleAllWithPermissions.rejected]: (state) => {
+          state.loading = false
+      },   
 
   }
 });
