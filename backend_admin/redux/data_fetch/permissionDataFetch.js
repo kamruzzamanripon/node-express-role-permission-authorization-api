@@ -8,7 +8,7 @@ export const permissionsAllWithGroupWise =  createAsyncThunk(
         
             try{
                 const res = await axios.get(`${process.env.apiBaseUrl}/permission-all-with-group-wise`);
-                console.log("api Hello", res)
+                //console.log("api Hello", res)
                 //console.log("permissionAllWithPagination server", res.data.Permission_info)
                 return res.data.data
             }catch(e){

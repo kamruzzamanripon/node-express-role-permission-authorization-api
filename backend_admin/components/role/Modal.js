@@ -1,24 +1,35 @@
 /* eslint-disable react/jsx-key */
 /* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from "react";
+import { useForm } from 'react-hook-form';
 import PureModal from "react-pure-modal";
 import "react-pure-modal/dist/react-pure-modal.min.css";
 import { useDispatch, useSelector } from "react-redux";
 import { permissionsAllWithGroupWise } from "../../redux/data_fetch/permissionDataFetch";
 
 const Modal = ({modal, setModal}) => {
-  const [roleInformation, setRoleInformation] = useState();
-  const permissionInfo = useSelector(state=>state.store.permissions.items)
+  const permissionInfo = useSelector(state=>state.store.permissions.items);
+  const [isCheckAll, setIsCheckAll] = useState(false);
   const dispatch = useDispatch();
+  const { register, handleSubmit, formState: { errors }, reset, watch } = useForm();
     
-  //console.log("permission", permissionInfo)
-  
-  const formHandle = (e)=>{
+  //console.log("permission", isCheckAll)
+  //for all checkbox default value
+  const selectAll = watch('selectAll')
+  console.log("select all", selectAll)
+
+  const formHandle = (data, e)=>{
     e.preventDefault();
-    console.log("role input info", roleInformation)
+    console.log("role input info", data)
     setModal(false)
     
   }
+
+  
+  const checkBoxAllClick = e => {
+    e.preventDefault()
+    setIsCheckAll(!isCheckAll);
+  };
 
   useEffect(()=>{
     dispatch(permissionsAllWithGroupWise())
@@ -35,14 +46,19 @@ const Modal = ({modal, setModal}) => {
         }}
   
       >
-        <form action="" onSubmit={formHandle}>
+        <form action="" onSubmit={handleSubmit(formHandle)}>
           <div className="flex-row space-y-3 relative">
               <div className="bg-purple-600 p-2 font-bold text-lg text-center text-white -mt-4 -mx-4 mb-5 pb-4">
                   <p>Role</p>
               </div>
               <div className="flex justify-between">
                   <label className="font-semibold pr-2">Name</label>
-                  <input className="border-2 border-purple-600/50 w-[75%] " type="text" onChange={(e)=>setRoleInformation({roleName:e.target.value})} />
+                  <input 
+                    className="border-2 border-purple-600/50 w-[75%] " type="text" 
+                    {...register("name", {
+                      required: "required",
+                    })} 
+                  />
               </div>
 
               <div className="text-center">
@@ -58,7 +74,13 @@ const Modal = ({modal, setModal}) => {
                     <div className="flex space-x-4 space-y-3 flex-wrap items-center justify-end">
                           {permission.details.map((permissionName, indexName)=>(
                               <label className="flex items-center ml-2" key={indexName}>
-                                <input type="checkbox" className="border-gray-300 rounded h-5 w-5 mr-1" />
+                                <input 
+                                  type="checkbox" 
+                                  className="border-gray-300 rounded h-5 w-5 mr-1" 
+                                  value={permissionName._id}
+                                  checked={selectAll }
+                                  {...register("permissions[]")}
+                                />
                                 <span className="cursor-pointer">{permissionName.name}</span>     
                               </label>
                           ))}
@@ -66,7 +88,14 @@ const Modal = ({modal, setModal}) => {
                   </div>
                 ))}
                 
-                <p className="mt-5 inline-block bg-yellow-600 py-1 px-4 cursor-pointer">Selet All Permissions</p>
+                <label className="cursor-pointer">
+                  <input 
+                    className="mt-5 mr-3 inline-block bg-yellow-600 py-1 px-4 cursor-pointer" 
+                    type='checkbox' 
+                    {...register("selectAll")}
+                  />Selet All Permissions       
+                </label>
+                
               </div>
 
                                    
