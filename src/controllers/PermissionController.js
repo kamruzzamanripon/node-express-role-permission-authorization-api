@@ -79,8 +79,8 @@ module.exports = class PermissionController{
         }
     }
 
-    //permisson all info show
-    static permissionList = async(req, res)=>{
+    //all permission list with group wise
+    static permissionsAllWithGroupWise = async(req, res)=>{
       
       try{
         const permissionList = await Permission.aggregate([

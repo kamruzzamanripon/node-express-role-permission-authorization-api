@@ -25,7 +25,7 @@ router.delete('/role-delete/:id', RoleController.roleDelete);
 router.post('/create-permission', PermissionController.createPermission);
 router.post('/edit-permission/:id', PermissionController.editPermission);
 router.delete('/delete-permission/:id', PermissionController.deletePermission);
-router.get('/permission-all', PermissionController.permissionList);
+router.get('/permission-all-with-group-wise', PermissionController.permissionsAllWithGroupWise);
 
 
 module.exports = router;

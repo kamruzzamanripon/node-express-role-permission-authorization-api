@@ -1,11 +1,17 @@
+/* eslint-disable react/jsx-key */
 /* eslint-disable @next/next/no-img-element */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PureModal from "react-pure-modal";
 import "react-pure-modal/dist/react-pure-modal.min.css";
+import { useDispatch, useSelector } from "react-redux";
+import { permissionsAllWithGroupWise } from "../../redux/data_fetch/permissionDataFetch";
 
 const Modal = ({modal, setModal}) => {
   const [roleInformation, setRoleInformation] = useState();
+  const permissionInfo = useSelector(state=>state.store.permissions.items)
+  const dispatch = useDispatch();
     
+  //console.log("permission", permissionInfo)
   
   const formHandle = (e)=>{
     e.preventDefault();
@@ -13,6 +19,10 @@ const Modal = ({modal, setModal}) => {
     setModal(false)
     
   }
+
+  useEffect(()=>{
+    dispatch(permissionsAllWithGroupWise())
+  },[])
   
   return (
     <>
@@ -37,97 +47,29 @@ const Modal = ({modal, setModal}) => {
 
               <div className="text-center">
                <h1 className="border-2 mb-2">Permission List </h1>
-               
-                <div className="flex items-center border-b-2 pb-3">
-                  <div className="w-1/3  p-3 bg-slate-600 text-white text-center">
-                      <p>Permission Name</p>
-                      <p className="bg-yellow-400 text-black p-1 px-3 mt-3 cursor-pointer">Select All</p>
+             
+                {permissionInfo && permissionInfo.map((permission, index)=>(
+                    <div className="flex items-center border-b-2 pb-3" key={index}>
+                    <div className="w-1/3  p-3 bg-slate-600 text-white text-center">
+                        <p>{permission._id.groupName}e</p>
+                        <p className="bg-yellow-400 text-black p-1 px-3 mt-3 cursor-pointer">Select All</p>
+                    </div>
+                   
+                    <div className="flex space-x-4 space-y-3 flex-wrap items-center justify-end">
+                          {permission.details.map((permissionName, indexName)=>(
+                              <label className="flex items-center ml-2" key={indexName}>
+                                <input type="checkbox" className="border-gray-300 rounded h-5 w-5 mr-1" />
+                                <span className="cursor-pointer">{permissionName.name}</span>     
+                              </label>
+                          ))}
+                    </div>
                   </div>
-                  <div className="flex space-x-4 space-y-3 flex-wrap items-center justify-end">
-                        <label className="flex items-center">
-                          <input type="checkbox" className="border-gray-300 rounded h-5 w-5 mr-1" />
-                          <span className="cursor-pointer">permission Single Name</span>     
-                        </label>
-                        <label className="flex items-center" >
-                          <input type="checkbox" className="border-gray-300 rounded h-5 w-5  mr-1" />
-                          <span className="cursor-pointer">permission Single Name</span>     
-                        </label>
-                        <label className="flex items-center" >
-                          <input type="checkbox" className="border-gray-300 rounded h-5 w-5  mr-1" />
-                          <span className="cursor-pointer">permission Single Name</span>     
-                        </label>
-                        <label className="flex items-center" >
-                          <input type="checkbox" className="border-gray-300 rounded h-5 w-5  mr-1" />
-                          <span className="cursor-pointer">permission Single Name</span>     
-                        </label>
-                        <label className="flex items-center" >
-                          <input type="checkbox" className="border-gray-300 rounded h-5 w-5  mr-1" />
-                          <span className="cursor-pointer">permission Single Name</span>     
-                        </label>
-                        <label className="flex items-center" >
-                          <input type="checkbox" className="border-gray-300 rounded h-5 w-5  mr-1" />
-                          <span className="cursor-pointer">permission Single Name</span>     
-                        </label>
-                        <label className="flex items-center" >
-                          <input type="checkbox" className="border-gray-300 rounded h-5 w-5  mr-1" />
-                          <span className="cursor-pointer">permission Single Name</span>     
-                        </label>
-                        <label className="flex items-center" >
-                          <input type="checkbox" className="border-gray-300 rounded h-5 w-5  mr-1" />
-                          <span className="cursor-pointer">permission Single Name</span>     
-                        </label>
-                  </div>
-                </div>
-                <div className="flex items-center border-b-2 pb-3">
-                  <div className="w-1/3  p-3 bg-slate-600 text-white text-center">
-                      <p>Permission Name</p>
-                      <p className="bg-yellow-400 text-black p-1 px-3 mt-3 cursor-pointer">Select All</p>
-                  </div>
-                  <div className="flex space-x-4 space-y-3 flex-wrap items-center justify-end">
-                        <label className="flex items-center">
-                          <input type="checkbox" className="border-gray-300 rounded h-5 w-5 mr-1" />
-                          <span className="cursor-pointer">permission Single Name</span>     
-                        </label>
-                        <label className="flex items-center" >
-                          <input type="checkbox" className="border-gray-300 rounded h-5 w-5  mr-1" />
-                          <span className="cursor-pointer">permission Single Name</span>     
-                        </label>
-                        <label className="flex items-center" >
-                          <input type="checkbox" className="border-gray-300 rounded h-5 w-5  mr-1" />
-                          <span className="cursor-pointer">permission Single Name</span>     
-                        </label>
-                        <label className="flex items-center" >
-                          <input type="checkbox" className="border-gray-300 rounded h-5 w-5  mr-1" />
-                          <span className="cursor-pointer">permission Single Name</span>     
-                        </label>
-                        <label className="flex items-center" >
-                          <input type="checkbox" className="border-gray-300 rounded h-5 w-5  mr-1" />
-                          <span className="cursor-pointer">permission Single Name</span>     
-                        </label>
-                        <label className="flex items-center" >
-                          <input type="checkbox" className="border-gray-300 rounded h-5 w-5  mr-1" />
-                          <span className="cursor-pointer">permission Single Name</span>     
-                        </label>
-                        <label className="flex items-center" >
-                          <input type="checkbox" className="border-gray-300 rounded h-5 w-5  mr-1" />
-                          <span className="cursor-pointer">permission Single Name</span>     
-                        </label>
-                        <label className="flex items-center" >
-                          <input type="checkbox" className="border-gray-300 rounded h-5 w-5  mr-1" />
-                          <span className="cursor-pointer">permission Single Name</span>     
-                        </label>
-                  </div>
-                </div>
-
-                  <p className="mt-5 inline-block bg-yellow-600 py-1 px-4 cursor-pointer">Selet All Permissions</p>
+                ))}
+                
+                <p className="mt-5 inline-block bg-yellow-600 py-1 px-4 cursor-pointer">Selet All Permissions</p>
               </div>
 
-              
-
-              
-
-              
-                        
+                                   
               <div className="flex justify-between">
                   <button className="bg-gray-700 text-white p-3 w-full mt-5 text-lg">Submit</button>
               </div>
