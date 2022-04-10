@@ -83,31 +83,16 @@ module.exports = class PermissionController{
     static permissionList = async(req, res)=>{
       
       try{
-        const permissionList = await Permission.find().lean().exec();
+        const permissionList = await Permission.aggregate([
+          {
+           $group: {
+            _id: { groupName: "$groupName" },
+             details: { $push: '$$ROOT' },
+             count: {$sum: 1},
+           },
+         }])
 
-        // let refromPermissionList = [];
-        // for(var i=0; permissionList.length> i; i++){
-        //   var groupName = permissionList[i].groupName;
-        //   var permisiionName = permissionList[i].name;
-        //   //return console.log(permisiionName)
-        //   var getpermisiionName = permisiionName.match(/.*(?=\.)/);
-        //   //return console.log(getpermisiionName[0])
-        //   var permissionDataArray = [];
-        //   var dataFormat ={}
-        //   if(groupName === getpermisiionName[0]){
-        //     permissionDataArray.push(permisiionName)
-        //     dataFormat = {
-        //       permissionArray: permissionDataArray
-        //     }
-        //     refromPermissionList.push(dataFormat);
-        //    // return console.log(dataFormat)
-        //   }
-
-        //   //refromPermissionList.push(dataFormat);
-
-        // }
-
-        //return console.log("hello", permissionList)
+        
         return res.status(200).json({
           code: 200,
           message: "Permission List",
