@@ -3,16 +3,24 @@ const Permission = require('../models/Permission');
 const Role = require('../models/Role');
 const RoleHasPermission = require('../models/RoleHasPermission');
 const UserHasRole = require('../models/UserHasRole');
+const roleAssignIntoPermissionSync = require('../utils/roleAssignIntoPermissionSync');
 
 
 module.exports = class RoleController{
 
     // Role Create
     static createRole = async(req, res)=>{
-        const payload = req.body;
-        //return console.log(payload)
+        const {name, permissions} = req.body;
+        //return console.log(payload.name)
         try {
-            const roleCreate = await new Role(payload).save();
+            const roleCreate = await new Role({name}).save();
+            const roleId = roleCreate._id
+           
+            //if permission have then assign
+            if(permissions.length > 0){
+              await roleAssignIntoPermissionSync(roleId, permissions)
+            }
+
             return res.status(200).json({
               code: 200,
               message: "Role Create Successfully",
