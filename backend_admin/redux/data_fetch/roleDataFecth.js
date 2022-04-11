@@ -8,7 +8,7 @@ export const roleAllWithPermissions =  createAsyncThunk(
         
             try{
                 const res = await axios.get(`${process.env.apiBaseUrl}/role-list-with-permissions`);
-                console.log("api Hello", res)
+                //console.log("api Hello", res)
                 //console.log("permissionAllWithPagination server", res.data.Permission_info)
                 return res.data.data
             }catch(e){
@@ -23,12 +23,6 @@ export const createNewRole =  createAsyncThunk(
     'role/newRole',
       async (data)=>{
           try{
-              const formData = new FormData();
-              formData.append('name', data.name)
-              //formData.append('permissionId[]', data.permissions)
-              console.log("axios data", data)
-              console.log("axio data", [...formData])
-                
                 const res = await axios.post(`${process.env.apiBaseUrl}/create-role`, data);
                 //console.log("api Hello", res)
                 //console.log("permissionAllWithPagination server", res.data.Permission_info)

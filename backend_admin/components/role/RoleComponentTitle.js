@@ -33,7 +33,7 @@ const RoleComponentTitle = ({title, titleDescription, buttonTitle}) => {
             </svg>
             {buttonTitle}
           </button>
-          <Modal modal={modal} setModal={setModal} />
+          <Modal modal={modal} setModal={setModal} inputStatus="createRole"/>
         </div>
       </>
     );

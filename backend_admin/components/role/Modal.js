@@ -13,8 +13,9 @@ const Modal = ({modal, setModal,  inputStatus, dataInfo}) => {
   const [permissionsSelectAll, setPermissionsSelectAll] = useState(false)
   const dispatch = useDispatch();
   const { register, handleSubmit, formState: { errors, isDirty,dirtyFields }, reset, watch, setValue } = useForm();
+  const defaultSelectedPermissionArray = dataInfo?.permissionArray
     
-  //console.log("permission", dataInfo)
+  //console.log("permission", defaultSelectedPermissionArray)
   //for all checkbox default value
   //const selectAll = watch('selectAll')
   //console.log("select all", selectAll)
@@ -25,6 +26,7 @@ const Modal = ({modal, setModal,  inputStatus, dataInfo}) => {
 
   const fields = watch();
   //console.log("select all", fields)
+  
   const selectPermissionAll = (e)=>{
     setPermissionsSelectAll(!permissionsSelectAll)
    
@@ -60,20 +62,30 @@ const Modal = ({modal, setModal,  inputStatus, dataInfo}) => {
       >
         <form action="" onSubmit={handleSubmit(formHandle)}>
           <div className="flex-row space-y-3 relative">
-              <div className="bg-purple-600 p-2 font-bold text-lg text-center text-white -mt-4 -mx-4 mb-5 pb-4">
-                  <p>Role</p>
+              
+              <div className={`${inputStatus === 'deleteModal' ?'bg-red-600' : 'bg-purple-600'}  p-2 font-bold text-lg text-center text-white -mt-4 -mx-4 mb-5 pb-4`}>
+                   {inputStatus === 'deleteModal' ? <p>Delete Role</p> : ''} 
+                   {inputStatus === 'createRole' ? <p>Create Role</p> : ''}
               </div>
+
               <div className="flex justify-between">
-                  <label className="font-semibold pr-2">Name</label>
-                  <input 
-                    className="border-2 border-purple-600/50 w-[75%] " type="text" 
-                    {...register("name", {
-                      required: "required",
-                    })} 
-                  />
-                  <br />
+                  {inputStatus === 'deleteModal' ? <p className=" text-center text-2xl text-red-500">{dataInfo.roleInfo.roleName}</p> : ''}
+                  {inputStatus === 'createRole' ? 
+                    <>
+                      <label className="font-semibold pr-2">Name</label>
+                        <input 
+                          className="border-2 border-purple-600/50 w-[75%] " type="text" 
+                          {...register("name", {
+                            required: "required",
+                          })} 
+                        />
+                        <br />
+                    </> 
+                    : ''} 
               </div>
               {errors.name && <p className="text-red-700 text-right font-semibold">This  Field is Required</p>}
+                  
+
 
               <div className="text-center">
                <h1 className="border-2 mb-2">Permission List </h1>
@@ -93,21 +105,28 @@ const Modal = ({modal, setModal,  inputStatus, dataInfo}) => {
                     </div>
                    
                     <div className="flex space-x-4 space-y-3 flex-wrap items-center justify-end">
-                          {permission.details.map((permissionName, indexName)=>(
-                              <label className="flex items-center ml-2" key={indexName}>
+                          {permission.details.map((permissionName, indexName)=>{
+                            const defaultValue = defaultSelectedPermissionArray && defaultSelectedPermissionArray.length > 0 ? 
+                                                defaultSelectedPermissionArray.filter((defaultItem)=> defaultItem.permisiionId === permissionName._id ) : false;
+                            const defaultId = defaultValue[0]?.permisiionId
+                            //console.log(defaultValue)
+                             return <label className="flex items-center ml-2" key={indexName}>
                                 <input 
                                   type="checkbox" 
                                   className="border-gray-300 rounded h-5 w-5 mr-1" 
                                   value={permissionName._id}
+                                  defaultChecked={defaultId === permissionName._id ? true : false }
                                    //checked={fields.selectAll }
                                    {...register("permissions[]")}
                                 />
                                 <span className="cursor-pointer">{permissionName.name}</span>     
                               </label>
-                          ))}
+                          })}
                     </div>
                   </div>
                 ))}
+
+                
                               
                 <label className="cursor-pointer">
                   <input 
@@ -122,7 +141,9 @@ const Modal = ({modal, setModal,  inputStatus, dataInfo}) => {
 
                                    
               <div className="flex justify-between">
-                  <button className="bg-gray-700 text-white p-3 w-full mt-5 text-lg">Submit</button>
+                  {inputStatus === 'deleteModal' ? <button className="bg-red-700 text-white p-3 w-full mt-5 text-lg">Delete Role</button> : ''} 
+                  {inputStatus === 'createRole' ? <button className="bg-gray-700 text-white p-3 w-full mt-5 text-lg">Create New Role</button> : ''}
+                  
               </div>
           </div>
         </form>

@@ -23,10 +23,8 @@ const RoleTable = ({modalStatus}) => {
     setModal(true)
     setTableSingleColumnData(data)
 
-      //set modal status
-      if(modalStatus === 'deleteModal'){
-      setModalMode('deleteModal')
-      }
+    //set modal status
+    setModalMode('deleteModal')
   }
 
   
