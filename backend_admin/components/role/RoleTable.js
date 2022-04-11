@@ -1,24 +1,35 @@
 import Table from 'rc-table';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { roleAllWithPermissions } from '../../redux/data_fetch/roleDataFecth';
+import Modal from './Modal';
 
 
-const RoleTable = () => {
+const RoleTable = ({modalStatus}) => {
   const dispatch = useDispatch();
   const roleData = useSelector((state)=>state.store.role.items);
-  //console.log(roleData)
+  const [modal, setModal] = useState(false);
+  const [tableSingleColumnData, setTableSingleColumnData] = useState('');
+  const [modalMode, setModalMode] = useState('');
+  //console.log(tableSingleColumnData)
   
   useEffect(()=>{
     dispatch(roleAllWithPermissions())
   },[]);
 
-  const viewInfoHandler = (data)=>{
-   console.log(data)
+  
+  //Table Delete Click Function
+  const deleteHandler = (data)=>{
+    setModal(true)
+    setTableSingleColumnData(data)
+
+      //set modal status
+      if(modalStatus === 'deleteModal'){
+      setModalMode('deleteModal')
+      }
   }
 
-
-
+  
     const columns = [
         {
           title: 'No',
@@ -54,7 +65,11 @@ const RoleTable = () => {
           dataIndex: '',
           key: 'operations',
           className:"text-white bg-gray-600 p-2 border-b-2",
-          render: () => <><a href="#">View</a> | <a href="#">Edit</a> | <a href="#">Delete</a></>,
+          render: (data) => <>
+                        <a href="#">View</a> | 
+                        <a href="#">Edit</a> | 
+                        <a href="#" onClick={()=>deleteHandler(data)}>Delete</a>
+                        </>,
           
         },
       ]
@@ -63,6 +78,12 @@ const RoleTable = () => {
     return (
         <>
         <Table columns={columns} data={roleData} rowKey="id"  className='bg-purple-700 p-4 w-full text-center rc-table-custom font-semibold '/>
+        <Modal 
+          modal={modal} 
+          setModal={setModal} 
+          inputStatus={modalMode}
+          dataInfo={tableSingleColumnData}
+        />
         </>
         
     );

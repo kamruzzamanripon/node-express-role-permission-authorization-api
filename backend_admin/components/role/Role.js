@@ -18,7 +18,7 @@ const Role = () => {
         <section className="grid md:grid-cols-1 xl:grid-cols-1 gap-6">
           
           <div className="flex-grow items-center p-8 bg-white shadow rounded-lg">
-            <RoleTable />
+            <RoleTable modalStatus="deleteModal" />
           </div>
                     
         </section>

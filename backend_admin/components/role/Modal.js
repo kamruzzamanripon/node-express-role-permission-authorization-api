@@ -8,13 +8,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { permissionsAllWithGroupWise } from "../../redux/data_fetch/permissionDataFetch";
 import { createNewRole } from "../../redux/data_fetch/roleDataFecth";
 
-const Modal = ({modal, setModal}) => {
+const Modal = ({modal, setModal,  inputStatus, dataInfo}) => {
   const permissionInfo = useSelector(state=>state.store.permissions.items);
   const [permissionsSelectAll, setPermissionsSelectAll] = useState(false)
   const dispatch = useDispatch();
   const { register, handleSubmit, formState: { errors, isDirty,dirtyFields }, reset, watch, setValue } = useForm();
     
-  //console.log("permission", isCheckAll)
+  //console.log("permission", dataInfo)
   //for all checkbox default value
   //const selectAll = watch('selectAll')
   //console.log("select all", selectAll)
@@ -25,7 +25,6 @@ const Modal = ({modal, setModal}) => {
 
   const fields = watch();
   //console.log("select all", fields)
-  
   const selectPermissionAll = (e)=>{
     setPermissionsSelectAll(!permissionsSelectAll)
    
