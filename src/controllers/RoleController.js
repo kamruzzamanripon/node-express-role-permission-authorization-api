@@ -19,6 +19,8 @@ module.exports = class RoleController{
             //if permission have then assign
             if(permissions.length > 0){
               await roleAssignIntoPermissionSync(roleId, permissions)
+            }else{
+              await roleAssignIntoPermissionSync(roleId, permissions)
             }
 
             return res.status(200).json({
@@ -59,14 +61,15 @@ module.exports = class RoleController{
     static roleAssignPermission = async(req, res)=>{
         const payload = req.body;
         const {roleId} = payload;
-        const {permissionId} = payload;
+        const {permissions} = payload;
         try {
             //find role id on role_has_permission table
             const findRoleIdOnTable = await RoleHasPermission.find().where({"roleId":roleId})
 
            // if role id found then update this collection/table
           if(findRoleIdOnTable){
-             const roleAssignPermission = await RoleHasPermission.findOneAndUpdate({"roleId":roleId}, {"permissionId":permissionId}, {upsert: true})
+             //const roleAssignPermission = await RoleHasPermission.findOneAndUpdate({"roleId":roleId}, {"permissionId":permissionId}, {upsert: true})
+             const roleAssignPermission = await roleAssignIntoPermissionSync(roleId, permissions)
 
             return res.status(200).json({
               code: 200,
@@ -172,6 +175,7 @@ module.exports = class RoleController{
             }]
           ).exec();
 
+         
           //1st gess roleWithPermissionArray has null array
           let roleWithPermissionArray = []
           for(var i=0; roleWithPermission.length > i ; i++){
@@ -180,12 +184,16 @@ module.exports = class RoleController{
               //3rd permission array info is null
                   let permissionArray = []
                   //4th permissionQueryArray is also another array. so again loop for another query to fetch permission info into permisson collection
-                  for(var j=0; permissionQueryArray.length > j; j++){
-                    let {_id:permisiionId, name:permissionName, groupName }  = await Permission.findOne({_id:permissionQueryArray[j]})
-                    let permissionInfoObject = {permisiionId, permissionName, groupName}
-                    //5th permission all info push into permissionArray
-                    permissionArray.push(permissionInfoObject)
-                  }
+                  //return console.log(permissionQueryArray[0] === false)
+                  if(permissionQueryArray[0] !== false && permissionQueryArray.length > 0){
+                    for(var j=0; permissionQueryArray.length > j; j++){
+                      let {_id:permisiionId, name:permissionName, groupName }  = await Permission.findOne({_id:permissionQueryArray[j]})
+                      let permissionInfoObject = {permisiionId, permissionName, groupName}
+                      //5th permission all info push into permissionArray
+                      permissionArray.push(permissionInfoObject)
+                    }
+                }
+
             //6th destructuring role information
             let {_id:roleId, name:roleName} = roleWithPermission[i].roleInformation[0];
            // 7th permissionArray and destructuring role information data build a new object
@@ -195,7 +203,9 @@ module.exports = class RoleController{
             }
             //8th this new object push into roleWithPermissionArray
             roleWithPermissionArray.push(totalObject);
+            
           }
+          
         return res.status(200).json({
           code: 200,
           message: "All role list with their permissions List",
