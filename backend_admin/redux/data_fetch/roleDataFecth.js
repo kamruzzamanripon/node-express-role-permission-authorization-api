@@ -32,3 +32,22 @@ export const createNewRole =  createAsyncThunk(
             }
         }
 )
+
+
+
+//delete Role
+export const deleteRole =  createAsyncThunk(
+    'role/deleteRole',
+      async (data)=>{
+          try{
+                const roleId = data.roleId
+                console.log("axios",roleId)
+                const res = await axios.delete(`${process.env.apiBaseUrl}/role-delete/${roleId}`);
+                //console.log("api Hello", res)
+                //console.log("permissionAllWithPagination server", res.data.Permission_info)
+                return res.data.data
+            }catch(e){
+                console.log("server Error", e)
+            }
+        }
+)

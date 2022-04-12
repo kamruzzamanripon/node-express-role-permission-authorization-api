@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/jsx-key */
 /* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from "react";
@@ -6,7 +7,7 @@ import PureModal from "react-pure-modal";
 import "react-pure-modal/dist/react-pure-modal.min.css";
 import { useDispatch, useSelector } from "react-redux";
 import { permissionsAllWithGroupWise } from "../../redux/data_fetch/permissionDataFetch";
-import { createNewRole } from "../../redux/data_fetch/roleDataFecth";
+import { createNewRole, deleteRole, roleAllWithPermissions } from "../../redux/data_fetch/roleDataFecth";
 
 const Modal = ({modal, setModal,  inputStatus, dataInfo}) => {
   const permissionInfo = useSelector(state=>state.store.permissions.items);
@@ -15,7 +16,7 @@ const Modal = ({modal, setModal,  inputStatus, dataInfo}) => {
   const { register, handleSubmit, formState: { errors, isDirty,dirtyFields }, reset, watch, setValue } = useForm();
   const defaultSelectedPermissionArray = dataInfo?.permissionArray
     
-  //console.log("permission", defaultSelectedPermissionArray)
+  console.log("permission", dataInfo)
   //for all checkbox default value
   //const selectAll = watch('selectAll')
   //console.log("select all", selectAll)
@@ -34,15 +35,27 @@ const Modal = ({modal, setModal,  inputStatus, dataInfo}) => {
 
   const formHandle = (data, e)=>{
     e.preventDefault();
-    dispatch(createNewRole(data))
+    
+    if(inputStatus === 'createRole'){
+      dispatch(createNewRole(data))
+    }else if(inputStatus === 'deleteRole'){
+      dispatch(deleteRole(data))
+      console.log(data)
+    }
+    
     //console.log("role input info", data)
+    
     setModal(false)
+    reset()
+    dispatch(roleAllWithPermissions())
+    
   }
 
  
   useEffect(()=>{
     dispatch(permissionsAllWithGroupWise())
   },[]);
+  
 
   //if modal de-select then reset all data
   useEffect(()=>{
@@ -62,14 +75,24 @@ const Modal = ({modal, setModal,  inputStatus, dataInfo}) => {
       >
         <form action="" onSubmit={handleSubmit(formHandle)}>
           <div className="flex-row space-y-3 relative">
+
+            {/* Item Id insert for Edit and Delete */}
+            {inputStatus === 'deleteRole' ?
+                      (<input 
+                      className="border-2 border-purple-600/50 w-[75%] "
+                      defaultValue={dataInfo?.roleInfo.roleId}
+                      type="hidden" 
+                      {...register("roleId")}
+                    />) : ''
+            }
               
-              <div className={`${inputStatus === 'deleteModal' ?'bg-red-600' : 'bg-purple-600'}  p-2 font-bold text-lg text-center text-white -mt-4 -mx-4 mb-5 pb-4`}>
-                   {inputStatus === 'deleteModal' ? <p>Delete Role</p> : ''} 
+              <div className={`${inputStatus === 'deleteRole' ?'bg-red-600' : 'bg-purple-600'}  p-2 font-bold text-lg text-center text-white -mt-4 -mx-4 mb-5 pb-4`}>
+                   {inputStatus === 'deleteRole' ? <p>Delete Role</p> : ''} 
                    {inputStatus === 'createRole' ? <p>Create Role</p> : ''}
               </div>
 
               <div className="flex justify-between">
-                  {inputStatus === 'deleteModal' ? <p className=" text-center text-2xl text-red-500">{dataInfo.roleInfo.roleName}</p> : ''}
+                  {inputStatus === 'deleteRole' ? <p className=" text-center text-2xl text-red-500">{dataInfo.roleInfo.roleName}</p> : ''}
                   {inputStatus === 'createRole' ? 
                     <>
                       <label className="font-semibold pr-2">Name</label>
@@ -141,7 +164,7 @@ const Modal = ({modal, setModal,  inputStatus, dataInfo}) => {
 
                                    
               <div className="flex justify-between">
-                  {inputStatus === 'deleteModal' ? <button className="bg-red-700 text-white p-3 w-full mt-5 text-lg">Delete Role</button> : ''} 
+                  {inputStatus === 'deleteRole' ? <button className="bg-red-700 text-white p-3 w-full mt-5 text-lg">Delete Role</button> : ''} 
                   {inputStatus === 'createRole' ? <button className="bg-gray-700 text-white p-3 w-full mt-5 text-lg">Create New Role</button> : ''}
                   
               </div>
