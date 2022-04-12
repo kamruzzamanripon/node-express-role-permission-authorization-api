@@ -41,8 +41,40 @@ export const deleteRole =  createAsyncThunk(
       async (data)=>{
           try{
                 const roleId = data.roleId
-                console.log("axios",roleId)
                 const res = await axios.delete(`${process.env.apiBaseUrl}/role-delete/${roleId}`);
+                //console.log("api Hello", res)
+                //console.log("permissionAllWithPagination server", res.data.Permission_info)
+                return res.data.data
+            }catch(e){
+                console.log("server Error", e)
+            }
+        }
+)
+
+
+//Edit Role
+export const editRole =  createAsyncThunk(
+    'role/editRole',
+      async (data)=>{
+          try{
+                const roleId = data.roleId
+                const res = await axios.post(`${process.env.apiBaseUrl}/edit-role/${roleId}`, data);
+                //console.log("api Hello", res)
+                //console.log("permissionAllWithPagination server", res.data.Permission_info)
+                return res.data.data
+            }catch(e){
+                console.log("server Error", e)
+            }
+        }
+)
+
+//Role Assing into permissions
+export const roleAssignPermission =  createAsyncThunk(
+    'role/roleAssignPermission',
+      async (data)=>{
+          try{
+                const roleId = data.roleId
+                const res = await axios.post(`${process.env.apiBaseUrl}/role-assign-permissin`, data);
                 //console.log("api Hello", res)
                 //console.log("permissionAllWithPagination server", res.data.Permission_info)
                 return res.data.data

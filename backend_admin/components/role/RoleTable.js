@@ -13,17 +13,30 @@ const RoleTable = ({modalStatus}) => {
   const [modalMode, setModalMode] = useState('');
   //console.log(tableSingleColumnData)
   
+  //default dispatch role all information for table
   useEffect(()=>{
     dispatch(roleAllWithPermissions())
   },[]);
 
   
+  //Table Role assign Click Function 
+  const roleAssignHandler = (data)=>{
+    setModal(true)
+    setTableSingleColumnData(data)
+    setModalMode('roleAssign')
+  }
+  
+  //Table Edit Click Function
+  const editHandler = (data)=>{
+    setModal(true)
+    setTableSingleColumnData(data)
+    setModalMode('editRole')
+  }
+  
   //Table Delete Click Function
   const deleteHandler = (data)=>{
     setModal(true)
     setTableSingleColumnData(data)
-
-    //set modal status
     setModalMode('deleteRole')
   }
 
@@ -42,7 +55,7 @@ const RoleTable = ({modalStatus}) => {
           title: 'Role',
           dataIndex: 'roleInfo',
           key: 'roleInfo',
-          width: 400,
+          width: 300,
           className:"text-white bg-gray-600 p-2 border-r-2 border-b-2",
           render: (data) =>{
            return   <a href="#">{data.roleName}</a>
@@ -52,7 +65,7 @@ const RoleTable = ({modalStatus}) => {
           title: 'permissions',
           dataIndex: 'permissionArray',
           key: 'permissionArray',
-          width: 500,
+          width: 400,
           className:"text-white bg-gray-800 p-2 border-r-2 border-b-2",
           render: (data) =>{
             return   <div>{data.map((permission, index)=> <><span key={index}>{permission.permissionName}</span> <br/></>)}</div>
@@ -64,8 +77,8 @@ const RoleTable = ({modalStatus}) => {
           key: 'operations',
           className:"text-white bg-gray-600 p-2 border-b-2",
           render: (data) => <>
-                        <a href="#">View</a> | 
-                        <a href="#">Edit</a> | 
+                        <a href="#" onClick={()=>roleAssignHandler(data)}>Role Assign</a> | 
+                        <a href="#" onClick={()=>editHandler(data)}>Edit</a> | 
                         <a href="#" onClick={()=>deleteHandler(data)}>Delete</a>
                         </>,
           

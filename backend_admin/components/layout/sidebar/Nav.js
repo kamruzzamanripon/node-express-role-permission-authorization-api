@@ -90,6 +90,16 @@ const Nav = ({ sidebarOutsideClick }) => {
         >
           <DuplicateIcon className="h-10" />
         </NavItem> 
+        
+        <NavItem
+          hrefLink='/permission'
+          sidebarStatus={sidebarStatus}
+          menuTitle="Permissions"
+          subMenu={false}
+          subMenuArray={null}
+        >
+          <DuplicateIcon className="h-10" />
+        </NavItem> 
 
         {/* this menu has child Menu     */}
         <NavItem
