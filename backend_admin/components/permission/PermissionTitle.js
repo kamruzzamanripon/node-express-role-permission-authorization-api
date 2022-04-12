@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import Modal from './Modal';
 
 
-
-
 const PermissionTitle = ({title, titleDescription, buttonTitle}) => {
     const [modal, setModal] = useState(false);
     
@@ -35,7 +33,7 @@ const PermissionTitle = ({title, titleDescription, buttonTitle}) => {
             </svg>
             {buttonTitle}
           </button>
-          <Modal modal={modal} setModal={setModal} inputStatus="createRole"/>
+          <Modal modal={modal} setModal={setModal} inputStatus="createPermission"/>
         </div>
       </>
     );

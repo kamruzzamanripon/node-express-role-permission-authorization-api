@@ -1,30 +1,42 @@
+/* eslint-disable react/jsx-key */
 /* eslint-disable @next/next/no-img-element */
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+import { useForm } from 'react-hook-form';
 import PureModal from "react-pure-modal";
 import "react-pure-modal/dist/react-pure-modal.min.css";
+import { useSelector } from "react-redux";
 
-const Modal = ({modal, setModal}) => {
-     //For Image Preview
-     const [selectedImage, setSelectedImage] = useState();
+const Modal = ({modal, setModal, inputStatus, dataInfo}) => {
+  
+  const permissionData = useSelector((state)=>state.store.permissions.items);   
+  const { register, handleSubmit, formState: { errors, isDirty,dirtyFields }, reset, watch, setValue } = useForm();
 
-     // This function will be triggered when the file field change
-    const imageChange = (e) => {
-        if (e.target.files && e.target.files.length > 0) {
-        setSelectedImage(e.target.files);
-        }
-    };
+  const fields = watch();
+  console.log("select all", fields.groupName)
 
-    // This function will be triggered when the "Remove This Image" button is clicked
-    const removeSelectedImage = () => {
-        setSelectedImage();
-    };   
+  const formHandle = (data, e)=>{
+    e.preventDefault();
 
-    useEffect(()=>{
-        if(!modal){
-            setSelectedImage();
-            }
-    },[modal])
-  //console.log('modal modal', modal)
+    if(inputStatus === 'createPermission'){
+      if(fields.groupName) data.orGroupName = ''
+      console.log(data)
+      //reset()
+    }
+    
+    setModal(false)
+   
+    
+  }
+
+
+
+   //if modal de-select then reset all data
+   useEffect(()=>{
+    if(!modal)reset()
+  },[modal])
+
+   
+  //console.log('modal modal', permissionData)
   return (
     <>
       <PureModal
@@ -37,53 +49,57 @@ const Modal = ({modal, setModal}) => {
         }}
   
       >
-        <div className="flex-row space-y-3 relative">
-            <div className="bg-purple-600 p-2 font-bold text-lg text-center text-white -mt-4 -mx-4 mb-5 pb-4">
-                <p>Category</p>
-            </div>
-            <div className="flex justify-between">
-                <label className="font-semibold pr-2">Name</label>
-                <input className="border-2 border-purple-600/50 w-[75%] " type="text" />
-            </div>
-            <div className="flex justify-between">
-                <label className="font-semibold pr-2">Category</label>
-                <select className="border-2 border-purple-600/50 w-[75%] " type="text">
-                    <option value="">Choose any Category</option>
-                    <option value="">Option One</option>
-                    <option value="">Option Two</option>
-                    <option value="">Option Three</option>
-                </select>
-            </div>
-            
-            <div className="flex-row justify-between">
-                <label className="font-semibold pr-2">Picture</label>
-                <input 
-                    className="border-2" 
-                    type="file" 
-                    accept="image/*"
-                    name="user[image]" 
-                    multiple="true"
-                    onChange={imageChange}
-                />
-               <div className="flex overflow-auto my-2 p-2">
-               {
-                 selectedImage && [...selectedImage].map((file, index)=><img key={index} src={URL.createObjectURL(file)}  className="w-32 h-32 mr-1 rounded-sm border-4"/>)
+        <form action="" onSubmit={handleSubmit(formHandle)}>
+          <div className="flex-row space-y-3 relative">
+              
+              <div className="bg-purple-600 p-2 font-bold text-lg text-center text-white -mt-4 -mx-4 mb-5 pb-4">
+                  {inputStatus === 'createPermission' ? <p>Create Permission</p> : ''}
+                  
+              </div>
+
+              {/* Permission Input Name */}
+              <div className="flex justify-between">
+                {inputStatus === 'createPermission' ? 
+                  <>
+                    <label className="font-semibold pr-2">Permission Name</label>
+                    <input className="border-2 border-purple-600/50 w-[75%] " type="text" {...register("name", {required: "required"})} />
+                  </> 
+                  : ''
                 }
-                
-               </div>
+              </div>
 
-               {selectedImage && 
-                <button onClick={removeSelectedImage}  className='bg-orange-400 p-2 rounded-md text-white'>
-                    Remove This Image
-                </button>
-               }
-               
+              
+              <div className="flex justify-between">
+                  <label className="font-semibold pr-2">Exists Group</label>
+                  <select className="border-2 border-purple-600/50 w-[75%] " type="text" {...register("groupName")}>
+                      <option value="">Choose any Category</option>
+                      {permissionData?.map((groupName, index)=>(
+                        <option value={groupName._id.groupName}>{groupName._id.groupName}</option>
+                      ))}
+                  </select>
+              </div>
 
-            </div>
-            <div className="flex justify-between">
-                <button className="bg-gray-700 text-white p-3 w-full mt-5 text-lg">Submit</button>
-            </div>
-        </div>
+                  
+              {inputStatus === 'createPermission' ? <p className="text-2xl font-bold text-center">OR</p> : ''}        
+
+              {/* Permission Input Group Name */}
+              <div className="flex justify-between">
+                {inputStatus === 'createPermission' ? 
+                  <>
+                    <label className="font-semibold pr-2">New Group Name</label>
+                    <input className="border-2 border-purple-600/50 w-[75%] " type="text" {...register("orGroupName")} disabled={fields.groupName ? true : false}  />
+                  </> 
+                  : ''
+                }
+              </div>
+
+              
+              
+              <div className="flex justify-between">
+                  {inputStatus === 'createPermission' ? <button className="bg-gray-700 text-white p-3 w-full mt-5 text-lg">Create New Permission</button> : ''}
+              </div>
+          </div>
+        </form>
       </PureModal>
       
     </>
