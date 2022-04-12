@@ -16,3 +16,56 @@ export const permissionsAllWithGroupWise =  createAsyncThunk(
             }
         }
 )
+
+
+
+//new Permission create
+export const createPermission =  createAsyncThunk(
+    'permission/createPermission',
+      async (data)=>{
+
+            try{
+                //console.log("axios", data)
+                const res = await axios.post(`${process.env.apiBaseUrl}/create-permission`, data);
+                //console.log("api Hello", res)
+                //console.log("permissionAllWithPagination server", res.data.Permission_info)
+                return res.data.data
+            }catch(e){
+                console.log("server Error", e)
+            }
+        }
+)
+
+//Delete Permission 
+export const deletePermission =  createAsyncThunk(
+    'permission/deletePermission',
+      async (permissionId)=>{
+            console.log("axior", permissionId)
+            try{
+                //console.log("axios", data)
+                const res = await axios.delete(`${process.env.apiBaseUrl}/delete-permission/${permissionId}`);
+                //console.log("api Hello", res)
+                //console.log("permissionAllWithPagination server", res.data.Permission_info)
+                return res.data.data
+            }catch(e){
+                console.log("server Error", e)
+            }
+        }
+)
+
+//Edit Permission 
+export const editPermission =  createAsyncThunk(
+    'permission/editPermission',
+      async ( data)=>{
+            console.log("axior", data)
+            try{
+                //console.log("axios", data)
+                const res = await axios.post(`${process.env.apiBaseUrl}/edit-permission/${data.id}`, data);
+                //console.log("api Hello", res)
+                //console.log("permissionAllWithPagination server", res.data.Permission_info)
+                return res.data.data
+            }catch(e){
+                console.log("server Error", e)
+            }
+        }
+)

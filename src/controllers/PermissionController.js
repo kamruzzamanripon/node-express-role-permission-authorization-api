@@ -6,7 +6,7 @@ module.exports = class PermissionController{
     //Create new Permission 
     static createPermission = async(req, res)=>{
         const payload = req.body;
-
+        //return console.log(payload)
         try {
             const permissionCreate = await new Permission(payload).save();
             return res.status(200).json({
@@ -27,6 +27,7 @@ module.exports = class PermissionController{
     static editPermission = async(req, res)=>{
       const id = req.params.id;
       const payload = req.body;
+      //return console.log(payload)
       try {
         const editPermission = await Permission.findByIdAndUpdate({"_id" : id}, payload);
         return res.status(200).json({
