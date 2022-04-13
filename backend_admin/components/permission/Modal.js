@@ -11,8 +11,8 @@ const Modal = ({modal, setModal, inputStatus, dataInfo}) => {
   
   const permissionData = useSelector((state)=>state.store.permissions.items);   
   const { register, handleSubmit, formState: { errors, isDirty,dirtyFields }, reset, watch, setValue } = useForm();
-  const [editPermisionName, setEditPermisionName] = useState()
-  const [editPermisionGroupName, setEditPermisionGroupName] = useState()
+  const [editPermisionName, setEditPermisionName] = useState();
+  const [rundefaultUseEffect, setRundefaultUseEffect] = useState(false);
   const dispatch = useDispatch();
 
   const fields = watch();
@@ -29,7 +29,7 @@ const Modal = ({modal, setModal, inputStatus, dataInfo}) => {
       dispatch(createPermission(data))
     }
     setModal(false)
-    dispatch(permissionsAllWithGroupWise())
+    setRundefaultUseEffect(true)
   }
 
   const deleteHandle = (permissionId)=>{
@@ -37,11 +37,11 @@ const Modal = ({modal, setModal, inputStatus, dataInfo}) => {
     dispatch(deletePermission(permissionId))
     setModal(false)
     reset()
-    dispatch(permissionsAllWithGroupWise())
+    setRundefaultUseEffect(true)
   }
 
 
-  const updateHandle = (permissionId, editPermisionName, editPermisionGroupName)=>{
+  const updateHandle = (permissionId, editPermisionName)=>{
     const data={
       id:permissionId,
       name:editPermisionName
@@ -49,16 +49,22 @@ const Modal = ({modal, setModal, inputStatus, dataInfo}) => {
     dispatch(editPermission(data))
     setModal(false)
     reset()
-    dispatch(permissionsAllWithGroupWise())
+    setRundefaultUseEffect(true)
   }
   
 
-
+  useEffect(()=>{
+    dispatch(permissionsAllWithGroupWise())
+    setRundefaultUseEffect(false)
+  },[rundefaultUseEffect])
+  
 
    //if modal de-select then reset all data
    useEffect(()=>{
     if(!modal)reset()
   },[modal])
+
+  
 
   
    
@@ -160,7 +166,7 @@ const Modal = ({modal, setModal, inputStatus, dataInfo}) => {
                         
                        
                         <br />
-                        <button className="bg-gray-700 text-white p-1 text-sm w-40" onClick={()=>updateHandle(permission._id, editPermisionName, editPermisionGroupName)} >Update</button> 
+                        <button className="bg-gray-700 text-white p-1 text-sm w-40" onClick={()=>updateHandle(permission._id, editPermisionName)} >Update</button> 
                       </div>
                     ))}
                     

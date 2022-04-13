@@ -2,7 +2,8 @@ import Table from 'rc-table';
 import React, { useState } from 'react';
 import Pagination from "react-js-pagination";
 
-const SubCategoryTable = () => {
+
+const UsersTable = () => {
     const columns = [
         {
           title: 'Name',
@@ -13,7 +14,7 @@ const SubCategoryTable = () => {
           rowClassName:"bg-black-ripon"
         },
         {
-          title: 'Category',
+          title: 'Total Subcategory',
           dataIndex: 'subCount',
           key: 'subCount',
           width: 400,
@@ -37,8 +38,8 @@ const SubCategoryTable = () => {
       ];
       
       const data = [
-        { name: 'Jack', subCount: 'avc', productCount: 'some where' },
-        { name: 'Rose', subCount: 'avc', productCount: 'some where' },
+        { name: 'Jack', subCount: 28, productCount: 'some where' },
+        { name: 'Rose', subCount: 36, productCount: 'some where' },
       ];
 
       //Pagination
@@ -69,4 +70,4 @@ const SubCategoryTable = () => {
     );
 };
 
-export default SubCategoryTable;
+export default UsersTable;

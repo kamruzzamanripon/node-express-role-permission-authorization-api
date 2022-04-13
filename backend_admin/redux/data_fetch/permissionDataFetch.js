@@ -11,8 +11,9 @@ export const permissionsAllWithGroupWise =  createAsyncThunk(
                 //console.log("api Hello", res)
                 //console.log("permissionAllWithPagination server", res.data.Permission_info)
                 return res.data.data
-            }catch(e){
-                console.log("server Error", e)
+            }catch(error){
+                console.log("server Error", error.response)
+                return  error.response.data
             }
         }
 )
@@ -30,8 +31,9 @@ export const createPermission =  createAsyncThunk(
                 //console.log("api Hello", res)
                 //console.log("permissionAllWithPagination server", res.data.Permission_info)
                 return res.data.data
-            }catch(e){
-                console.log("server Error", e)
+            }catch(error){
+                console.log("server Error", error.response)
+                return  error.response.data.message
             }
         }
 )
@@ -47,8 +49,9 @@ export const deletePermission =  createAsyncThunk(
                 //console.log("api Hello", res)
                 //console.log("permissionAllWithPagination server", res.data.Permission_info)
                 return res.data.data
-            }catch(e){
-                console.log("server Error", e)
+            }catch(error){
+                console.log("server Error", error.response)
+                return  error.response.data
             }
         }
 )
@@ -64,8 +67,9 @@ export const editPermission =  createAsyncThunk(
                 //console.log("api Hello", res)
                 //console.log("permissionAllWithPagination server", res.data.Permission_info)
                 return res.data.data
-            }catch(e){
-                console.log("server Error", e)
+            }catch(error){
+                console.log("server Error", error.response)
+                return  error.response.data
             }
         }
 )

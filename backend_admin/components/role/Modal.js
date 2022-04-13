@@ -14,7 +14,8 @@ const Modal = ({modal, setModal,  inputStatus, dataInfo}) => {
   const [permissionsSelectAll, setPermissionsSelectAll] = useState(false)
   const dispatch = useDispatch();
   const { register, handleSubmit, formState: { errors, isDirty,dirtyFields }, reset, watch, setValue } = useForm();
-  const defaultSelectedPermissionArray = dataInfo?.permissionArray
+  const defaultSelectedPermissionArray = dataInfo?.permissionArray;
+  const [rundefaultUseEffect, setRundefaultUseEffect] = useState(false);
     
   //console.log("permission", dataInfo)
   //for all checkbox default value
@@ -51,7 +52,7 @@ const Modal = ({modal, setModal,  inputStatus, dataInfo}) => {
     }
     
     setModal(false)
-    dispatch(roleAllWithPermissions())
+    setRundefaultUseEffect(true)
     
   }
 
@@ -61,6 +62,12 @@ const Modal = ({modal, setModal,  inputStatus, dataInfo}) => {
     dispatch(permissionsAllWithGroupWise())
   },[]);
   
+
+  // default Table role list run
+  useEffect(()=>{
+    dispatch(roleAllWithPermissions())
+    setRundefaultUseEffect(false)
+  },[rundefaultUseEffect])
 
   //if modal de-select then reset all data
   useEffect(()=>{

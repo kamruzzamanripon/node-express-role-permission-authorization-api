@@ -4,15 +4,16 @@ import axios from 'axios';
 //Role List with related all permisssion
 export const roleAllWithPermissions =  createAsyncThunk(
     'role/roleListWithPermissions',
-      async (pageNumber)=>{
+      async ()=>{
         
             try{
                 const res = await axios.get(`${process.env.apiBaseUrl}/role-list-with-permissions`);
                 //console.log("api Hello", res)
                 //console.log("permissionAllWithPagination server", res.data.Permission_info)
                 return res.data.data
-            }catch(e){
-                console.log("server Error", e)
+            }catch(error){
+                console.log("server Error", error.response)
+                return  error.response.data
             }
         }
 )
@@ -27,8 +28,9 @@ export const createNewRole =  createAsyncThunk(
                 //console.log("api Hello", res)
                 //console.log("permissionAllWithPagination server", res.data.Permission_info)
                 return res.data.data
-            }catch(e){
-                console.log("server Error", e)
+            }catch(error){
+                console.log("server Error", error.response)
+                return  error.response.data
             }
         }
 )
@@ -45,8 +47,9 @@ export const deleteRole =  createAsyncThunk(
                 //console.log("api Hello", res)
                 //console.log("permissionAllWithPagination server", res.data.Permission_info)
                 return res.data.data
-            }catch(e){
-                console.log("server Error", e)
+            }catch(error){
+                console.log("server Error", error.response)
+                return  error.response.data
             }
         }
 )
@@ -62,8 +65,9 @@ export const editRole =  createAsyncThunk(
                 //console.log("api Hello", res)
                 //console.log("permissionAllWithPagination server", res.data.Permission_info)
                 return res.data.data
-            }catch(e){
-                console.log("server Error", e)
+            }catch(error){
+                console.log("server Error", error.response)
+                return  error.response.data
             }
         }
 )
@@ -78,8 +82,9 @@ export const roleAssignPermission =  createAsyncThunk(
                 //console.log("api Hello", res)
                 //console.log("permissionAllWithPagination server", res.data.Permission_info)
                 return res.data.data
-            }catch(e){
-                console.log("server Error", e)
+            }catch(error){
+                console.log("server Error", error.response)
+                return  error.response.data
             }
         }
 )

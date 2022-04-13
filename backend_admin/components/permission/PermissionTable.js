@@ -11,10 +11,9 @@ const PermissionTable = () => {
   const [modal, setModal] = useState(false);
   const [tableSingleColumnData, setTableSingleColumnData] = useState('');
   const [modalMode, setModalMode] = useState('');
+  
 
-  useEffect(()=>{
-    dispatch(permissionsAllWithGroupWise())
-  },[]);
+ 
 
 
   //Table Role assign Click Function 
@@ -38,6 +37,9 @@ const PermissionTable = () => {
     setModalMode('deletePermission')
   }
 
+  useEffect(()=>{
+    dispatch(permissionsAllWithGroupWise())
+  },[]);
 
     const columns = [
         {

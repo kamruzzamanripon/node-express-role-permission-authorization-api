@@ -12,6 +12,7 @@
     "@heroicons/react": "^1.0.6",
     "@reduxjs/toolkit": "^1.8.1",
     "axios": "^0.26.1",
+    "js-cookie": "^3.0.1",
     "next": "12.1.0",
     "next-redux-wrapper": "^7.0.5",
     "rc-table": "^7.23.0",

@@ -1,7 +1,7 @@
 import {
   ArrowNarrowLeftIcon,
   ArrowNarrowRightIcon,
-  CollectionIcon, DuplicateIcon, FilmIcon
+  CollectionIcon, DuplicateIcon
 } from "@heroicons/react/solid";
 import React, { useEffect, useState } from "react";
 import NavItem from "./NavItem";
@@ -22,21 +22,7 @@ const Nav = ({ sidebarOutsideClick }) => {
     setSubMenuToggleStatus(!subMenuToggleStatus);
   };
 
-   //if menu has chile menu then  use seperate array
-   const childMenu = [
-    {
-      subMenuTitle: "child One",
-      linkHref: "/"
-    },
-    {
-      subMenuTitle: "child Two",
-      linkHref: "/"
-    },
-    {
-      subMenuTitle: "child Three",
-      linkHref: "/"
-    }
-  ];
+   
 
   useEffect(() => {
     if (sidebarOutsideClick) {
@@ -70,17 +56,7 @@ const Nav = ({ sidebarOutsideClick }) => {
         >
           <CollectionIcon className="h-10" />
         </NavItem> 
-
-        <NavItem
-          hrefLink='/sub-category'
-          sidebarStatus={sidebarStatus}
-          menuTitle="Sub-Category"
-          subMenu={false}
-          subMenuArray={null}
-        >
-          <DuplicateIcon className="h-10" />
-        </NavItem> 
-
+        
         <NavItem
           hrefLink='/role'
           sidebarStatus={sidebarStatus}
@@ -101,16 +77,18 @@ const Nav = ({ sidebarOutsideClick }) => {
           <DuplicateIcon className="h-10" />
         </NavItem> 
 
-        {/* this menu has child Menu     */}
+
         <NavItem
-          hrefLink='#'
+          hrefLink='/user-info'
           sidebarStatus={sidebarStatus}
-          menuTitle="Chiled Menu"
-          subMenu={true}
-          subMenuArray={childMenu}
+          menuTitle="user info"
+          subMenu={false}
+          subMenuArray={null}
         >
-          <FilmIcon className="h-10" />
+          <DuplicateIcon className="h-10" />
         </NavItem> 
+
+        
        
       </nav>
     </>

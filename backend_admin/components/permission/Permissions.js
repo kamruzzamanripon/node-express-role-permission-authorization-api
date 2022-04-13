@@ -1,10 +1,13 @@
 import React from 'react';
+import { canPermission } from '../../utils/permissionHook';
+import { canRole } from '../../utils/roleHook';
 import PermissionTable from './PermissionTable';
 import PermissionTitle from './PermissionTitle';
 
 
 const Permissions = () => {
-   
+   console.log("Permission Access",canPermission('post.Edit'))
+   console.log("Role Access",canRole('SuperAdminX'))
     return (
         <main className="p-6 sm:p-10 space-y-6">
         
