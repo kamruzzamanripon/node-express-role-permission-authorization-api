@@ -44,7 +44,7 @@ const Modal = ({modal, setModal, inputStatus, dataInfo}) => {
         }}
   
       >
-        <div className="flex-row space-y-3 relative space-y-3">
+        <div className="flex-row space-y-3 relative">
             <div className="bg-purple-600 p-2 font-bold text-lg text-center text-white -mt-4 -mx-4 mb-5 pb-4">
                 {inputStatus === 'createUser' ?<p>Create New User</p> : ''} 
             </div>
@@ -52,7 +52,7 @@ const Modal = ({modal, setModal, inputStatus, dataInfo}) => {
             <form action="" onSubmit={handleSubmit(formHandle)}>
               
               {inputStatus === 'createUser' ?
-                <>
+                <div className="space-y-3">
                     <div className="flex justify-between">
                         <label className="font-semibold pr-2">Name</label>
                         <input className="border-2 border-purple-600/50 w-[75%] " type="text" {...register("name", {required: "required"})} />
@@ -80,7 +80,7 @@ const Modal = ({modal, setModal, inputStatus, dataInfo}) => {
                     <div className="flex justify-between">
                         <button className="bg-gray-700 text-white p-3 w-full mt-5 text-lg">Submit</button>
                     </div>
-                </> 
+                </div> 
               : ''} 
 
             </form>

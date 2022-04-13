@@ -77,6 +77,66 @@ module.exports = class UserController {
 
     }
 
+    static userAllList = async(req, res)=>{
+      try {
+        //const userAllList = await User.find().lean().exec();
+        const userAllListX = await User.aggregate([{
+          $lookup: {
+              from: "user_has_role", // collection name in db
+              localField: "_id",
+              foreignField: "userId",
+              as: "roleInformation"
+              }
+            }]
+          ).exec();
+
+
+          const userAllList = await User.aggregate([
+            {$lookup:
+                {
+                   from: "user_has_role",
+                   localField: "_id",
+                   foreignField: "userId",
+                   as: "roleInformation"
+                }
+            },
+            {
+                $unwind:"$roleInformation"
+            },
+            {
+              $lookup: {
+                  from: "roles",
+                  localField: "roleInformation.roleId",
+                  foreignField: "_id",
+                  as: "userInfo"
+              }
+            }
+        ])
+
+
+
+
+
+
+
+
+
+
+       // return console.log(singleUserAllInfo)
+      return res.status(200).json({
+         code: 200,
+         message: "User All Information",
+         data: userAllList,
+       });
+     } catch (error) {
+       res.status(501).json({
+         code: 501,
+         message: error.message,
+         error: true,
+       });
+     }
+    }
+
 
     static userLogin = async(req, res)=>{
       const { email, password } = req.body;
