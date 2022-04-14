@@ -34,11 +34,11 @@ module.exports = class UserController {
     //Role assign on user base on user id
     static userRoleAssign = async(req, res)=>{
         const payload = req.body
-        //return console.log(payload.userId)
+        //return console.log(payload)
         
         try {
             const userRoleAssign = await new UserHasRole(payload).save();
-            const userInfoUpdate = await User.findOneAndUpdate( { _id: payload.userId }, {roleId: payload.roleId} );
+            //const userInfoUpdate = await User.findOneAndUpdate( { _id: payload.userId }, {roleId: payload.roleId} );
             return res.status(200).json({
               code: 200,
               message: "User Create Successfully",
@@ -89,9 +89,6 @@ module.exports = class UserController {
                 }
             },
             {
-                $unwind:"$roleInformation"
-            },
-            {
               $lookup: {
                   from: "roles",
                   localField: "roleInformation.roleId",
@@ -112,15 +109,6 @@ module.exports = class UserController {
           }
         ]
         ).exec();
-
-
-
-
-
-
-
-
-
 
        // return console.log(singleUserAllInfo)
       return res.status(200).json({

@@ -8,7 +8,7 @@ const router = express.Router();
 
 //Usr router
 router.post('/create-user', UserController.createUser);
-router.post('/user-role-assign', permissionMiddleware('user.Create'), UserController.userRoleAssign);
+router.post('/user-role-assign', authMiddleware, permissionMiddleware('user.Create'), UserController.userRoleAssign);
 router.get('/single-user-info/:id', authMiddleware, permissionMiddleware('user.Access'), UserController.singleUserInfo);
 router.get('/user-all-list', UserController.userAllList);
 router.post('/user-login', UserController.userLogin);

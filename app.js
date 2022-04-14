@@ -7,8 +7,11 @@ const cors = require('cors');
 const app = new express();
 
 app.use(cors({
-    origin: '*'
+    origin: '*',
+    credentials: true,
+    origin: "http://localhost:3000"
 }));
+
 
 //use app
 app.use(bodyParse.json());

@@ -19,6 +19,24 @@ export const roleAllWithPermissions =  createAsyncThunk(
 )
 
 
+//Role List 
+export const roleList =  createAsyncThunk(
+    'role/roleList',
+      async ()=>{
+        
+            try{
+                const res = await axios.get(`${process.env.apiBaseUrl}/role-list`);
+                //console.log("api Hello", res)
+                //console.log("permissionAllWithPagination server", res.data.Permission_info)
+                return res.data.data
+            }catch(error){
+                console.log("server Error", error.response)
+                return  error.response.data
+            }
+        }
+)
+
+
 //Role Create and if have any permissions then assign
 export const createNewRole =  createAsyncThunk(
     'role/newRole',

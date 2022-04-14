@@ -1,5 +1,5 @@
 import Table from 'rc-table';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { userAllList } from '../../redux/data_fetch/userInfoDataFetch';
 import Modal from './Modal';
@@ -9,30 +9,33 @@ const UsersTable = () => {
 
   const dispatch = useDispatch();
   const userData = useSelector((state)=>state?.store?.userInfo?.items);
+  const [modal, setModal] = useState(false);
+  const [tableSingleColumnData, setTableSingleColumnData] = useState('');
+  const [modalMode, setModalMode] = useState('');
 
 
   //Table Role assign Click Function 
   const roleAssignHandler = (data)=>{
     setModal(true)
     setTableSingleColumnData(data)
-    setModalMode('roleAssign')
+    setModalMode('roleAssignUser')
   }
   
   //Table Edit Click Function
   const editHandler = (data)=>{
     setModal(true)
     setTableSingleColumnData(data)
-    setModalMode('editRole')
+    setModalMode('editUser')
   }
   
   //Table Delete Click Function
   const deleteHandler = (data)=>{
     setModal(true)
     setTableSingleColumnData(data)
-    setModalMode('deleteRole')
+    setModalMode('deleteUser')
   }
 
-  console.log("user Data", userData)
+  //console.log("user Data", userData)
   //default dispatch User all information for table
   useEffect(()=>{
     dispatch(userAllList())
@@ -75,7 +78,7 @@ const UsersTable = () => {
           width: 400,
           className:"text-white bg-gray-800 p-2 border-r-2 border-b-2",
           render: (data) =>{
-            return   <p href="#">{data[0].name}</p>
+            return   <p href="#">{data[0]?.name}</p>
            }
         },
         {
@@ -83,7 +86,7 @@ const UsersTable = () => {
           dataIndex: '',
           key: 'operations',
           className:"text-white bg-gray-600 p-2 border-b-2",
-          render: () => <>
+          render: (data) => <>
                          <a href="#" onClick={()=>roleAssignHandler(data)}>Role Assign</a> | 
                           <a href="#" onClick={()=>editHandler(data)}>Edit</a> | 
                           <a href="#" onClick={()=>deleteHandler(data)}>Delete</a>

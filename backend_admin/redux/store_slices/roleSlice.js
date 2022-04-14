@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createNewRole, deleteRole, editRole, roleAllWithPermissions, roleAssignPermission } from "../data_fetch/roleDataFecth";
+import { createNewRole, deleteRole, editRole, roleAllWithPermissions, roleAssignPermission, roleList } from "../data_fetch/roleDataFecth";
 
 
 
@@ -28,6 +28,19 @@ const roleSlice = createSlice({
           state.items = payload
       },
       [roleAllWithPermissions.rejected]: (state) => {
+          state.loading = false
+      },   
+      
+      
+      //Role List 
+      [roleList.pending]: (state) => {
+        state.loading = true
+      },
+      [roleList.fulfilled]: (state, { payload }) => {
+          state.loading = false
+          state.items = payload
+      },
+      [roleList.rejected]: (state) => {
           state.loading = false
       },  
       
