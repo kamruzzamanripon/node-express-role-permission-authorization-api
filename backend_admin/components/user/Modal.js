@@ -1,17 +1,18 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from 'react-hook-form';
 import PureModal from "react-pure-modal";
 import "react-pure-modal/dist/react-pure-modal.min.css";
 import { useDispatch, useSelector } from "react-redux";
 import { roleList } from "../../redux/data_fetch/roleDataFecth";
-import { userCreate, userRoleAssign } from "../../redux/data_fetch/userInfoDataFetch";
+import { userAllList, userCreate, userRoleAssign } from "../../redux/data_fetch/userInfoDataFetch";
 
 
 const Modal = ({modal, setModal, inputStatus, dataInfo}) => {
 
   const { register, handleSubmit, formState: { errors, isDirty,dirtyFields }, reset, watch, setValue } = useForm();
   const roleListInfo = useSelector((state)=>state?.store?.role?.items);
+  const [rundefaultUseEffect, setRundefaultUseEffect] = useState(false);
   const dispatch = useDispatch();
   
     
@@ -24,18 +25,25 @@ const Modal = ({modal, setModal, inputStatus, dataInfo}) => {
     if(inputStatus === 'createUser'){
       dispatch(userCreate(data))
       //console.log(data)
-      reset()
     }
     else if(inputStatus === 'roleAssignUser'){
       dispatch(userRoleAssign(data))
       //console.log(data)
-      reset()
     }
     
+    reset()
     setModal(false)
+    setRundefaultUseEffect(true)
     //setRundefaultUseEffect(true)
     
   }
+
+
+  // default Table User list run
+  useEffect(()=>{
+    dispatch(userAllList())
+    setRundefaultUseEffect(false)
+  },[rundefaultUseEffect])
 
   //default featch all role list for role assign input
   useEffect(()=>{

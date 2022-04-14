@@ -69,10 +69,10 @@ export const userRoleAssign =  createAsyncThunk(
       async (data)=>{
         
             try{
-                //return console.log("axios data",data)
+                //console.log("axios data",data)
                 //console.log(axiosClient())
                 const res = await axiosInstance().post(`${process.env.apiBaseUrl}/user-role-assign`, data);
-                console.log("api Hello", res.data)
+                //console.log("api Hello", res.data)
                
                 return res.data.data
             }catch(error){

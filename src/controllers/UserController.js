@@ -34,16 +34,36 @@ module.exports = class UserController {
     //Role assign on user base on user id
     static userRoleAssign = async(req, res)=>{
         const payload = req.body
-        //return console.log(payload)
+        const {userId, roleId} = payload;
+        //return console.log(roleId)
         
         try {
-            const userRoleAssign = await new UserHasRole(payload).save();
+          const finduserIdOnTable = await UserHasRole.find().where({"userId":userId})
+           // if role id found then update this collection/table
+           if(finduserIdOnTable){
+            const userRoleAssign = await UserHasRole.findOneAndUpdate({"userId":userId}, {"roleId":roleId}, {upsert: true})
+            //return console.log(userRoleAssign)
+
+           return res.status(200).json({
+             code: 200,
+             message: "User Role update Successfully",
+             data: userRoleAssign,
+           });
+         }else{
+           //if role id not found then create new collection/table
+           const userRoleAssign = await new UserHasRole(payload).save();
+           return res.status(200).json({
+             code: 200,
+             message: "user Role Assign Successfully",
+             data: userRoleAssign,
+           });
+         }
+
+
+
+            //const userRoleAssign = await new UserHasRole(payload).save();
             //const userInfoUpdate = await User.findOneAndUpdate( { _id: payload.userId }, {roleId: payload.roleId} );
-            return res.status(200).json({
-              code: 200,
-              message: "User Create Successfully",
-              data: userRoleAssign,
-            });
+            
           } catch (error) {
             res.status(501).json({
               code: 501,
