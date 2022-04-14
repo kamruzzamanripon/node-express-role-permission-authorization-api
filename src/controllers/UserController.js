@@ -79,25 +79,13 @@ module.exports = class UserController {
 
     static userAllList = async(req, res)=>{
       try {
-        //const userAllList = await User.find().lean().exec();
-        const userAllListX = await User.aggregate([{
-          $lookup: {
-              from: "user_has_role", // collection name in db
-              localField: "_id",
-              foreignField: "userId",
-              as: "roleInformation"
-              }
-            }]
-          ).exec();
-
-
-          const userAllList = await User.aggregate([
+         const userAllList = await User.aggregate([
             {$lookup:
                 {
-                   from: "user_has_role",
-                   localField: "_id",
-                   foreignField: "userId",
-                   as: "roleInformation"
+                   from: "user_has_role",   // collection to join
+                   localField: "_id",       //field from the input documents
+                   foreignField: "userId",  //field from the documents of the "from" collection
+                   as: "roleInformation"    // output array field
                 }
             },
             {
@@ -108,10 +96,22 @@ module.exports = class UserController {
                   from: "roles",
                   localField: "roleInformation.roleId",
                   foreignField: "_id",
-                  as: "userInfo"
+                  as: "roleInfo"
               }
+            },
+            //For presentaiton
+            {
+              "$project": {
+              "_id": 1,
+              "name": 1,
+              "email": 1,
+              "phone": 1,
+              "roleInfo.name": 1
+              
             }
-        ])
+          }
+        ]
+        ).exec();
 
 
 

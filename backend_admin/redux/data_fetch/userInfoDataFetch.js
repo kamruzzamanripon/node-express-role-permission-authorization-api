@@ -27,11 +27,29 @@ export const userLogin =  createAsyncThunk(
 
 //New User Create
 export const userCreate =  createAsyncThunk(
-    'userInfo/userLogin',
+    'userInfo/userCreate',
       async (data)=>{
         
             try{
                 const res = await axios.post(`${process.env.apiBaseUrl}/create-user`, data);
+                //console.log("api Hello", res.data)
+               
+                return res.data.data
+            }catch(error){
+                console.log("server Error", error.response)
+                return  error.response.data
+            }
+        }
+)
+
+
+//User All List
+export const userAllList =  createAsyncThunk(
+    'userInfo/userAllList',
+      async ()=>{
+        
+            try{
+                const res = await axios.get(`${process.env.apiBaseUrl}/user-all-list`);
                 console.log("api Hello", res.data)
                
                 return res.data.data
