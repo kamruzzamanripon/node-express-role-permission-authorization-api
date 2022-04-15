@@ -12,6 +12,7 @@ router.post('/user-role-assign', authMiddleware, permissionMiddleware('user.Crea
 router.get('/single-user-info/:id', authMiddleware, permissionMiddleware('user.Access'), UserController.singleUserInfo);
 router.get('/user-all-list', UserController.userAllList);
 router.post('/user-login', UserController.userLogin);
+router.delete('/user-delete/:id', UserController.userDelete);
 
 //role router
 router.post('/create-role', RoleController.createRole);
