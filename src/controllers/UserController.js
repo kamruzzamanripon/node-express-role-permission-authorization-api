@@ -58,13 +58,7 @@ module.exports = class UserController {
              data: userRoleAssign,
            });
          }
-
-
-
-            //const userRoleAssign = await new UserHasRole(payload).save();
-            //const userInfoUpdate = await User.findOneAndUpdate( { _id: payload.userId }, {roleId: payload.roleId} );
-            
-          } catch (error) {
+        } catch (error) {
             res.status(501).json({
               code: 501,
               message: error.message,
@@ -123,7 +117,8 @@ module.exports = class UserController {
               "name": 1,
               "email": 1,
               "phone": 1,
-              "roleInfo.name": 1
+              "roleInfo.name": 1,
+              "roleInfo._id": 1,
               
             }
           }
