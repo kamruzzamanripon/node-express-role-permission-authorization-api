@@ -81,3 +81,24 @@ export const userRoleAssign =  createAsyncThunk(
             }
         }
 )
+
+
+//User Delete and its role assign also delete
+export const userDelete =  createAsyncThunk(
+    'userInfo/userDelete',
+      async (data)=>{
+        
+            try{
+                //console.log("axios data",data)
+                //console.log(axiosClient())
+                const userId = data.userId
+                const res = await axiosInstance().delete(`${process.env.apiBaseUrl}/user-delete/${userId}`);
+                //console.log("api Hello", res.data)
+               
+                return res.data.data
+            }catch(error){
+                console.log("server Error", error.response)
+                return  error.response.data
+            }
+        }
+)

@@ -5,7 +5,7 @@ import PureModal from "react-pure-modal";
 import "react-pure-modal/dist/react-pure-modal.min.css";
 import { useDispatch } from "react-redux";
 import { roleList } from "../../redux/data_fetch/roleDataFecth";
-import { userAllList, userCreate, userRoleAssign } from "../../redux/data_fetch/userInfoDataFetch";
+import { userAllList, userCreate, userDelete, userRoleAssign } from "../../redux/data_fetch/userInfoDataFetch";
 import CreateUser from "./sort/CreateUser";
 import RoleAssignUserOrDeleteUser from "./sort/RoleAssignUserOrDeleteUser";
 
@@ -30,6 +30,10 @@ const Modal = ({modal, setModal, inputStatus, dataInfo}) => {
     }
     else if(inputStatus === 'roleAssignUser'){
       dispatch(userRoleAssign(data))
+      //console.log(data)
+    }
+    else if(inputStatus === 'deleteUser'){
+      dispatch(userDelete(data))
       //console.log(data)
     }
     

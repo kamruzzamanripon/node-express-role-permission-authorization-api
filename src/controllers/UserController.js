@@ -178,8 +178,9 @@ module.exports = class UserController {
     //User Delete and also its related role assign delete
     static userDelete = async(req, res)=>{
       const id = req.params.id;
+      //return console.log(id)
       try {
-        const userRoleAssignDelete = await UserHasRole.findByIdAndDelete(id)
+        const userRoleAssignDelete = await UserHasRole.deleteOne().where({userId:id});
         const userDelete = await User.findByIdAndDelete(id)
         
         return res.status(200).json({

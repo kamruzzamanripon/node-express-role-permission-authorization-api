@@ -25,7 +25,7 @@ const RoleAssignUserOrDeleteUser = ({register, errors, dataInfo, inputStatus}) =
             className="border-2 border-purple-600/50 w-[75%] "
             defaultValue={dataInfo?.roleInfo[0]?._id}
             {...register("roleId", { required: "required" })}
-            disabled={inputStatus === 'deleteUser' ? true : false }
+            //disabled={inputStatus === 'deleteUser' ? true : false }
         
           >
             <option value="">Choose any Role</option>

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { userAllList, userCreate, userLogin, userRoleAssign } from "../data_fetch/userInfoDataFetch";
+import { userAllList, userCreate, userDelete, userLogin, userRoleAssign } from "../data_fetch/userInfoDataFetch";
 
 
 
@@ -67,6 +67,19 @@ const userInfoSlice = createSlice({
           state.item = payload
       },
       [userRoleAssign.rejected]: (state) => {
+          state.loading = false
+      },    
+
+
+      //User Delete
+      [userDelete.pending]: (state) => {
+        state.loading = true
+      },
+      [userDelete.fulfilled]: (state, { payload }) => {
+          state.loading = false
+          state.item = payload
+      },
+      [userDelete.rejected]: (state) => {
           state.loading = false
       },    
       
