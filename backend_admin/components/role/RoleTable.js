@@ -58,7 +58,7 @@ const RoleTable = ({modalStatus}) => {
           width: 300,
           className:"text-white bg-gray-600 p-2 border-r-2 border-b-2",
           render: (data) =>{
-           return   <a href="#">{data.roleName}</a>
+           return   <a href="#">{data?.roleName}</a>
           }
         },
         {
@@ -68,7 +68,7 @@ const RoleTable = ({modalStatus}) => {
           width: 400,
           className:"text-white bg-gray-800 p-2 border-r-2 border-b-2",
           render: (data) =>{
-            return   <div>{data.map((permission, index)=> <><span key={index}>{permission.permissionName}</span> <br/></>)}</div>
+            return   <div>{data?.map((permission, index)=> <><span key={index}>{permission.permissionName}</span> <br/></>)}</div>
            }
         },
         {

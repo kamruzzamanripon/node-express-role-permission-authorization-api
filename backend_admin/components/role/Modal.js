@@ -146,7 +146,7 @@ const Modal = ({modal, setModal,  inputStatus, dataInfo}) => {
               <div className="text-center">
                <h1 className="border-2 mb-2">Permission List </h1>
              
-                {permissionInfo && permissionInfo.map((permission, index)=>(
+                {permissionInfo.length > 0 && permissionInfo.map((permission, index)=>(
                     <div className="flex items-center border-b-2 pb-3" key={index}>
                     <div className="w-1/3  p-3 bg-slate-600 text-white text-center">
                         <p>{permission._id.groupName}e</p>

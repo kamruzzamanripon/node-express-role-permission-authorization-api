@@ -10,9 +10,9 @@ const router = express.Router();
 router.post('/create-user', UserController.createUser);
 router.post('/user-role-assign', authMiddleware, permissionMiddleware('user.Create'), UserController.userRoleAssign);
 router.get('/single-user-info/:id', authMiddleware, permissionMiddleware('user.Access'), UserController.singleUserInfo);
-router.get('/user-all-list', UserController.userAllList);
-router.post('/user-login', UserController.userLogin);
-router.delete('/user-delete/:id', UserController.userDelete);
+router.get('/user-all-list', authMiddleware, UserController.userAllList);
+router.post('/user-login',  UserController.userLogin);
+router.delete('/user-delete/:id',authMiddleware,  UserController.userDelete);
 
 //role router
 router.post('/create-role', RoleController.createRole);
@@ -24,10 +24,10 @@ router.get('/role-wise-permissin-show/:id', RoleController.roleWisePermissionSho
 router.delete('/role-delete/:id', RoleController.roleDelete);
 
 //permission router
-router.post('/create-permission', PermissionController.createPermission);
-router.post('/edit-permission/:id', PermissionController.editPermission);
-router.delete('/delete-permission/:id', PermissionController.deletePermission);
-router.get('/permission-all-with-group-wise', PermissionController.permissionsAllWithGroupWise);
+router.post('/create-permission', authMiddleware, permissionMiddleware('permission.Create'), PermissionController.createPermission);
+router.post('/edit-permission/:id', authMiddleware, permissionMiddleware('permission.Edit'), PermissionController.editPermission);
+router.delete('/delete-permission/:id', authMiddleware, permissionMiddleware('permission.Delete'), PermissionController.deletePermission);
+router.get('/permission-all-with-group-wise', authMiddleware,  PermissionController.permissionsAllWithGroupWise);
 
 
 module.exports = router;

@@ -15,6 +15,7 @@ export const userLogin =  createAsyncThunk(
                 const user_info = res.data.data.userAllInfo
                 Cookies.set("jwt_backend",  token)
                 Cookies.set("user_info",  JSON.stringify(user_info))
+                localStorage.setItem('user_info', JSON.stringify(user_info));
                 axios.defaults.headers.common["Authorization"] = `${token}`
                 //console.log("permissionAllWithPagination server", res.data.Permission_info)
                 return res.data.data

@@ -4,7 +4,7 @@ const Role = require("../models/Role");
 const RoleHasPermission = require("../models/RoleHasPermission");
 const User = require("../models/User");
 const UserHasRole = require("../models/UserHasRole");
-const { matchData } = require("../utils/bcrypt");
+const { matchData, hashMaker } = require("../utils/bcrypt");
 const { createToken } = require("../utils/jwt");
 const userAllInformation = require("../utils/userAllInformation");
 
@@ -14,9 +14,11 @@ module.exports = class UserController {
     //New User Create
     static createUser = async (req, res) => {
       let payload = req.body;
+      //return console.log(payload)
+      const { name, email, phone, password } = payload;
   
      try {
-        const userCreate = await new User(payload).save();
+        const userCreate = await new User({name, email, phone, password:hashMaker(password)}).save();
         return res.status(200).json({
           code: 200,
           message: "User Create Successfully",
@@ -30,6 +32,43 @@ module.exports = class UserController {
         });
       }
     };
+
+    //User Login
+    static userLogin = async(req, res)=>{
+      const { email, password } = req.body;
+
+      const user = await User.findOne({ email }).exec();
+      //return console.log(user);
+  
+      if (!user)
+        return res
+          .status(401)
+          .json({code: 401, message: "Email isn't registered."})
+      else if (!matchData(password, user.password))
+        return res.status(401).json({code: 401, message: "Password doesn't matched."})
+      else if (!user.active)
+        return res
+          .status(401)
+          .json({code: 401, message: "Your account is deactivated."})
+      else {
+        const { name, _id, email, phone } = user;
+        const userAllInfo = await userAllInformation(_id)
+        //return console.log(name);
+        const data = {
+          userAllInfo,
+          jwt_token: "Bearer " + createToken({ _id, name, email, phone }),
+        };
+        //userAllInfo.jwt_token ="Bearer " + createToken({ _id, name, email, phone })
+        return res.status(200).json({
+          code: 200,
+          message: "User data Information",
+          data: data,
+        });
+      }
+    }
+
+
+
 
     //Role assign on user base on user id
     static userRoleAssign = async(req, res)=>{
@@ -141,38 +180,7 @@ module.exports = class UserController {
     }
 
 
-    static userLogin = async(req, res)=>{
-      const { email, password } = req.body;
-
-      const user = await User.findOne({ email }).exec();
-      //return console.log(user);
-  
-      if (!user)
-        return res
-          .status(401)
-          .json({code: 401, message: "Email isn't registered."})
-      else if (!matchData(password, user.password))
-        return res.status(401).json({code: 401, message: "Password doesn't matched."})
-      else if (!user.active)
-        return res
-          .status(401)
-          .json({code: 401, message: "Your account is deactivated."})
-      else {
-        const { name, _id, email, phone } = user;
-        const userAllInfo = await userAllInformation(_id)
-        //return console.log(name);
-        const data = {
-          userAllInfo,
-          jwt_token: "Bearer " + createToken({ _id, name, email, phone }),
-        };
-        //userAllInfo.jwt_token ="Bearer " + createToken({ _id, name, email, phone })
-        return res.status(200).json({
-          code: 200,
-          message: "User data Information",
-          data: data,
-        });
-      }
-    }
+    
 
 
     //User Delete and also its related role assign delete

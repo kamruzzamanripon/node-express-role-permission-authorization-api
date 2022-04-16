@@ -4,6 +4,7 @@ import {
   CollectionIcon, DuplicateIcon
 } from "@heroicons/react/solid";
 import React, { useEffect, useState } from "react";
+import { canRole } from "../../../utils/roleHook";
 import NavItem from "./NavItem";
 
 const Nav = ({ sidebarOutsideClick }) => {
@@ -67,15 +68,17 @@ const Nav = ({ sidebarOutsideClick }) => {
           <DuplicateIcon className="h-10" />
         </NavItem> 
         
-        <NavItem
-          hrefLink='/permission'
-          sidebarStatus={sidebarStatus}
-          menuTitle="Permissions"
-          subMenu={false}
-          subMenuArray={null}
-        >
-          <DuplicateIcon className="h-10" />
-        </NavItem> 
+        {canRole('SuperAdmin') && 
+          <NavItem
+            hrefLink='/permission'
+            sidebarStatus={sidebarStatus}
+            menuTitle="Permissions"
+            subMenu={false}
+            subMenuArray={null}
+          >
+            <DuplicateIcon className="h-10" />
+          </NavItem> 
+        }
 
 
         <NavItem

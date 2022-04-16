@@ -7,7 +7,7 @@ import PermissionTitle from './PermissionTitle';
 
 const Permissions = () => {
    console.log("Permission Access",canPermission('post.Edit'))
-   console.log("Role Access",canRole('SuperAdminX'))
+   console.log("Role Access",canRole('SuperAdmin'))
     return (
         <main className="p-6 sm:p-10 space-y-6">
         

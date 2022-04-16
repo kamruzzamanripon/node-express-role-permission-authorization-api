@@ -11,6 +11,7 @@ function permissionMiddleware(permissionName) {
         //return console.log(permissionList)
 
         const userExcess = permissionList.filter((permission) => permission.name === permissionName)
+        //return console.log(userExcess)
         if (userExcess.length > 0) next();
         else return res.status(401).send('You are not Authorized!');
     }

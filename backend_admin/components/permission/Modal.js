@@ -183,7 +183,7 @@ const Modal = ({modal, setModal, inputStatus, dataInfo}) => {
                       <label className="font-semibold pr-2">Exists Group</label>
                       <select className="border-2 border-purple-600/50 w-[75%] " type="text" {...register("groupName")}>
                           <option value="">Choose any Category</option>
-                          {permissionData?.map((groupName, index)=>(
+                          {permissionData && permissionData.length > 0 &&  permissionData?.map((groupName, index)=>(
                             <option value={groupName._id.groupName}>{groupName._id.groupName}</option>
                           ))}
                       </select>
