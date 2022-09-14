@@ -9,6 +9,7 @@ function authMiddleware(req, res, next) {
         next();
     } catch (err) {
         res.status(400).send('Authentication Failed')
+        
     }
 }
 module.exports = authMiddleware
